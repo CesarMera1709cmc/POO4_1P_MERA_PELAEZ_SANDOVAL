@@ -8,6 +8,47 @@ package Principal;
  *
  * @author frank
  */
-public class Conductor {
-    
+public class Conductor extends Usuario {
+
+    private String numLicencia;
+    private Vehiculo vehiculo;
+    private int edad;
+    private String estado;
+
+    public Conductor() {
+    }
+
+    // Getters & Setters  ----> Conductor
+    public String getNumLicencia() {
+        return numLicencia;
+    }
+
+    public void setNumLicencia(String numLicencia) {
+        this.numLicencia = numLicencia;
+    }
+
+    public Vehiculo getVehiculo() {
+        return vehiculo;
+    }
+
+    public void setVehiculo(Vehiculo vehiculo) {
+        this.vehiculo = vehiculo;
+    }
+
+    public int getEdad() {
+        return edad;
+    }
+
+    public void setEdad(int edad) {
+        this.edad = edad;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
 }

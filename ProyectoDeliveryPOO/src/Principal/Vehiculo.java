@@ -10,4 +10,6 @@ package Principal;
  */
 public class Vehiculo {
     
+    
+    
 }
