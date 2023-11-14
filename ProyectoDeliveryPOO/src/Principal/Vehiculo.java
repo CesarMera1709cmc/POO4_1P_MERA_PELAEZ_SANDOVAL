@@ -9,7 +9,7 @@ package Principal;
  * @author frank
  */
 public class Vehiculo {
-    
+    private int matricula;
     
     
 }
