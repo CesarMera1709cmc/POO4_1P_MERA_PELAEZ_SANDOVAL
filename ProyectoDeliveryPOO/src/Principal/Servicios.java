@@ -11,7 +11,7 @@ import java.util.Date;
  * @author cesar
  */
 public class Servicios {
-    //protected Ruta ruta;
+    protected Ruta ruta;
     protected Date fecha  ;
     protected Conductor conductor;
     protected TipoServicio tipoServicio;
