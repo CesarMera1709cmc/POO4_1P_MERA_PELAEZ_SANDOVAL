@@ -9,5 +9,32 @@ package Principal;
  * @author cesar
  */
 public class Encomienda {
+    private int cantProductos;
+    private TipoEncomienda tipoEncomienda;
+    private double pesoKG;
+
+    public int getCantProductos() {
+        return cantProductos;
+    }
+
+    public void setCantProductos(int cantProductos) {
+        this.cantProductos = cantProductos;
+    }
+
+    public TipoEncomienda getTipoEncomienda() {
+        return tipoEncomienda;
+    }
+
+    public void setTipoEncomienda(TipoEncomienda tipoEncomienda) {
+        this.tipoEncomienda = tipoEncomienda;
+    }
+
+    public double getPesoKG() {
+        return pesoKG;
+    }
+
+    public void setPesoKG(double pesoKG) {
+        this.pesoKG = pesoKG;
+    }
     
 }
