@@ -9,5 +9,14 @@ package Principal;
  * @author cesar
  */
 public class ViajeTaxi {
+    private int numPersonas;
+
+    public int getNumPersonas() {
+        return numPersonas;
+    }
+
+    public void setNumPersonas(int numPersonas) {
+        this.numPersonas = numPersonas;
+    }
     
 }
