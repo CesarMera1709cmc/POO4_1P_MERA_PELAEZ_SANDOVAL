@@ -1,16 +1,13 @@
-package Principal;
-
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Enum.java to edit this template
  */
+package Principal.enums;
 
 /**
  *
- * @author frank
+ * @author Pc
  */
-public enum TipoUsuario {
-    C,R
-// Tipo Cliente --> C
-// Tipo Conductor --> R    
+public enum TipoEstado {
+    
 }

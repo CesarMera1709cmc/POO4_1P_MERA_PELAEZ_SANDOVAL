@@ -4,6 +4,8 @@
  */
 package Principal;
 
+import Principal.enums.TipoUsuario;
+
 /**
  *
  * @author frank

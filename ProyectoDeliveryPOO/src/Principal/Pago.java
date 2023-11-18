@@ -4,6 +4,7 @@
  */
 package Principal;
 
+import Principal.enums.TipoFormaPago;
 import java.util.Date;
 
 /**

@@ -4,6 +4,8 @@
  */
 package Principal;
 
+import Principal.enums.TipoEstado;
+
 /**
  *
  * @author frank
@@ -13,7 +15,7 @@ public class Conductor extends Usuario {
     private String numLicencia;
     private Vehiculo vehiculo;
     private int edad;
-    private String estado;
+    private TipoEstado estado;
 
     public Conductor() {
     }
@@ -43,12 +45,12 @@ public class Conductor extends Usuario {
         this.edad = edad;
     }
 
-    public String getEstado() {
+    public TipoEstado getEstado() {
         return estado;
     }
 
     public void setEstado(String estado) {
-        this.estado = estado;
+        this.estado = TipoEstado.valueOf(estado);
     }
 
 }

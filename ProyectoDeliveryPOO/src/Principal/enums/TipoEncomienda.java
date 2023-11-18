@@ -2,12 +2,12 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Enum.java to edit this template
  */
-package Principal;
+package Principal.enums;
 
 /**
  *
- * @author Pc
+ * @author cesar
  */
-public enum TipoFormaPago {
-    E, TC
+public enum TipoEncomienda {
+    MEDICAMENTOS,DOCUMENTOS,ROPA;
 }

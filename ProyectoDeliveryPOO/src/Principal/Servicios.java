@@ -4,6 +4,7 @@
  */
 package Principal;
 
+import Principal.enums.TipoServicio;
 import java.util.Date;
 
 /**

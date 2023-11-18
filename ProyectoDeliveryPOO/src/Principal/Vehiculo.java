@@ -4,6 +4,8 @@
  */
 package Principal;
 
+import Principal.enums.TipoVehiculo;
+
 /**
  *
  * @author frank
@@ -38,4 +40,5 @@ public class Vehiculo {
     public void setPlaca(TipoVehiculo tipoVehiculo){
         this.tipoVehiculo = tipoVehiculo;
     }
+    
 }
