@@ -45,7 +45,7 @@ public class Sistema {
             System.out.println("USUARIO: ");
             usuarioConsola = scanner.nextLine();
 
-            System.out.println("CONTRASEÑA: ");
+            System.out.println("CONTRASENA: ");
             usuarioContrasena = scanner.nextLine();
 
             if (!validarUsuarioSistema(usuarioConsola, usuarioContrasena)) {
@@ -54,16 +54,16 @@ public class Sistema {
             }
         } while (!validarUsuarioSistema(usuarioConsola, usuarioContrasena));
 
-        System.out.println("INICIO DE SESION CORRECTO." );
+        System.out.println("INICIO DE SESION CORRECTO.");
         System.out.println("BIENVENID@ : " + usuarioConsola);
 
-     // UNA VEZ VALIDADO EL USUARIO; ES NECESARIO UN METODO QUE CONTRUYA UNA LISTA DE    
-     // USUARIOS PARA SEGUIR CON EL PROGRAMA 
-      
-     
-        
-        
-        
+        // UNA VEZ VALIDADO EL USUARIO; ES NECESARIO UN METODO QUE CONTRUYA UNA LISTA DE    
+        // USUARIOS PARA SEGUIR CON EL PROGRAMA 
+        ArrayList<Usuario> usuariosSistema = crearUsuariosDelSistema();
+
+        Usuario usuarioSistema = identificarClienteConductor(usuarioConsola, usuariosSistema);
+
+        ejecutarMenu(usuarioSistema);
     }
 
     // ESTE METODO SOLO VALIDA QUE EL USUARIO QUE ES INGRESADO  POR CONSOLA SEA
@@ -81,6 +81,169 @@ public class Sistema {
             }
         }
         return false;
+
+    }
+
+    public static ArrayList<Usuario> crearUsuariosDelSistema() {
+
+        ArrayList<String> usuarios = ManejoArchivos.LeeFichero("usuarios.txt");
+
+        ArrayList<Usuario> usuariosSistema = new ArrayList();
+
+        for (String lineaUsuarios : usuarios) {
+
+            String[] partes = lineaUsuarios.split(",");
+
+            if (partes[6].equals("C")) {
+
+                Usuario usuario = new Cliente(partes[0], partes[1], partes[2], partes[3], partes[4], partes[5]);
+
+                usuariosSistema.add(usuario);
+
+            } // PREGUNTA : EDAD CONDUCTOR? CEDULA CODUCTOR? LICENCIA?
+
+            if (partes[6].equals("R")) {
+
+                Usuario usuario = new Conductor(partes[0], partes[1], partes[2], partes[3], partes[4], partes[5]);
+                usuariosSistema.add(usuario);
+            }
+
+        }
+
+        return usuariosSistema;
+    }
+
+    public static Usuario identificarClienteConductor(String usuario, ArrayList<Usuario> listaUsuariosSistema) {
+
+        Scanner scanner = new Scanner(System.in);
+
+        for (int i = 0; i < listaUsuariosSistema.size(); i++) {
+            Usuario usuarioSistema = listaUsuariosSistema.get(i);
+
+            if (usuarioSistema instanceof Cliente && usuarioSistema.getUser().equals(usuario)) {
+                Cliente cliente = (Cliente) usuarioSistema;
+
+                // Preguntar al Cliente la edad y Tarjeta de crédito
+                System.out.println("");
+                System.out.println("ANTES DE CONTINUAR  ");
+
+                // Preguntar y establecer la edad del cliente
+                System.out.println("Ingrese su edad:  ");
+                int edadCliente = scanner.nextInt();
+                cliente.setEdad(edadCliente);
+
+                // Preguntar y establecer el número de tarjeta de crédito del cliente
+                System.out.println("Ingresar el numero de su tarjeta de Credito/Debito: ");
+                scanner.nextLine(); // Limpiar el buffer de entrada antes de leer la línea
+                String numeroTarjeta = scanner.nextLine();
+                cliente.setNumTarjetaCredito(numeroTarjeta);
+
+                System.out.println("GRACIAS POR COMPLETAR LOS DATOS FALTANTES.");
+                System.out.println("");
+
+                return cliente; // Devuelve el cliente identificado
+
+            }
+
+            if (usuarioSistema instanceof Conductor && usuarioSistema.getUser().equals(usuario)) {
+
+                Conductor conductor = (Conductor) usuarioSistema;
+                // DECIDIMOS PREGUNTAR POR LA EDAD AL CONDUCTOR, YA QUE EL ARCHIVO NO ESPECIFICA. 
+                System.out.println("");
+                System.out.println("ANTES DE CONTINUAR  ");
+
+                // Preguntar y establecer la edad del conductor
+                System.out.println("Ingrese su edad:  ");
+                int edadCliente = scanner.nextInt();
+                conductor.setEdad(edadCliente);
+
+                return conductor;
+            }
+        }
+        return null;
+    }
+
+    //CONFIGURACION DE MENU PARA EL SISTEMA    
+    public static void ejecutarMenu(Usuario usuario) {
+
+        if (usuario instanceof Cliente) {
+            menuCliente((Cliente) usuario); //DOWNCASTNG
+
+        } else if (usuario instanceof Conductor) {
+            menuConductor((Conductor) usuario); //DOWNCASTING
+        }
+    }
+
+    private static void menuCliente(Cliente cliente) {
+
+        Scanner scanner = new Scanner(System.in);
+
+        do {
+            System.out.println("/****************MENU****************/");
+            System.out.println("/*                                  */");
+            System.out.println("/************************************/");
+            System.out.println("1. Solicitar servicio de taxi");
+            System.out.println("2. Solicitar entrega de encomiendas");
+            System.out.println("3. Consultar servicios");
+            System.out.println("4. Salir");
+            System.out.println("");
+
+            System.out.print("Elija una opcion: ");
+            int opcion = scanner.nextInt();
+
+            switch (opcion) {
+                case 1:
+                    // METODO DE SOLICITAR SERVICIO
+                    break;
+                case 2:
+                    // METODO DE SOLICITAR ENTREGA
+                    break;
+                case 3:
+                    // METODO DE CONSULTAR SERVICIOS
+                    break;
+                case 4:
+                    System.out.println("Gracias por usar nuestrar aplicacion! G8");
+                    System.exit(0);
+                    break;
+                default:
+                    System.out.println("La opcion ingresada no es valida");
+            }
+
+        } while (true);
+    }
+
+    private static void menuConductor(Conductor conductor) {
+
+        Scanner scanner = new Scanner(System.in);
+
+        do {
+            System.out.println("/***********MENU CONDUCTOR***********/");
+            System.out.println("/*                                  */");
+            System.out.println("/************************************/");
+            System.out.println("1. Consultar servicios asignados");
+            System.out.println("2. Datos de su vehiculo");
+            System.out.println("3. Salir");
+            System.out.println("");
+
+            System.out.print("Elija una opcion: ");
+            int opcion = scanner.nextInt();
+
+            switch (opcion) {
+                case 1:
+                    // METODO CONSULTAR SERVICIO CONDUCTOR
+                    break;
+                case 2:
+                    // METODO DATOS DE VEHICULO
+                    break;
+                case 3:
+                    System.out.println("Gracias por usar nuestrar aplicacion! G8");
+                    System.exit(0);
+                    break;
+                default:
+                    System.out.println("La opcion ingresada no es valida");
+            }
+
+        } while (true);
 
     }
 
