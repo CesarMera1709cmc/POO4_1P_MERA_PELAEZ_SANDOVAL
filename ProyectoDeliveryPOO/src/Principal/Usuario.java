@@ -4,7 +4,6 @@
  */
 package Principal;
 
-import Principal.enums.TipoUsuario;
 
 /**
  *
@@ -18,6 +17,7 @@ public class Usuario {
     protected String user;
     protected String contrasena;
     protected String celular;
+    protected int edad;
     
     public Usuario() {
     }
@@ -74,6 +74,24 @@ public class Usuario {
         this.user = user;
     }
 
+     public String getCelular() {
+        return celular;
+    }
+
+    public void setCelular(String celular) {
+        this.celular = celular;
+    }
+
+    public int getEdad() {
+        return edad;
+    }
+
+    public void setEdad(int edad) {
+        this.edad = edad;
+    }
+    
+    
+    
     /*
     @Override
     public String toString() {
@@ -82,4 +100,6 @@ public class Usuario {
 
     }
     */
+
+   
 }

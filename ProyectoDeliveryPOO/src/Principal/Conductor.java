@@ -12,7 +12,6 @@ import Principal.enums.TipoEstado;
  */
 public class Conductor extends Usuario {
 
-    private String numLicencia;
     private Vehiculo vehiculo;
     private int edad;
     private TipoEstado estado;
@@ -20,6 +19,7 @@ public class Conductor extends Usuario {
     public Conductor() {
     }
 
+    
     public Conductor(String numCedula, String nombre, String apellido, String user, String contrasena, String celular) {
         super(numCedula, nombre, apellido, user, contrasena, celular);
     }
@@ -27,13 +27,6 @@ public class Conductor extends Usuario {
     
 
     // Getters & Setters  ----> Conductor
-    public String getNumLicencia() {
-        return numLicencia;
-    }
-
-    public void setNumLicencia(String numLicencia) {
-        this.numLicencia = numLicencia;
-    }
 
     public Vehiculo getVehiculo() {
         return vehiculo;

@@ -45,7 +45,7 @@ public class Sistema {
             System.out.println("USUARIO: ");
             usuarioConsola = scanner.nextLine();
 
-            System.out.println("CONTRASEÑA: ");
+            System.out.println("CONTRASENA: ");
             usuarioContrasena = scanner.nextLine();
 
             if (!validarUsuarioSistema(usuarioConsola, usuarioContrasena)) {
@@ -59,10 +59,11 @@ public class Sistema {
 
         // UNA VEZ VALIDADO EL USUARIO; ES NECESARIO UN METODO QUE CONTRUYA UNA LISTA DE    
         // USUARIOS PARA SEGUIR CON EL PROGRAMA 
-        ArrayList <Usuario> usuariosSistema = crearUsuariosDelSistema();
-        
-        Cliente cliente = identificarCliente(usuarioConsola, usuariosSistema);
-        
+        ArrayList<Usuario> usuariosSistema = crearUsuariosDelSistema();
+
+        Usuario usuarioSistema = identificarClienteConductor(usuarioConsola, usuariosSistema);
+
+        ejecutarMenu(usuarioSistema);
     }
 
     // ESTE METODO SOLO VALIDA QUE EL USUARIO QUE ES INGRESADO  POR CONSOLA SEA
@@ -100,11 +101,19 @@ public class Sistema {
                 usuariosSistema.add(usuario);
 
             } // PREGUNTA : EDAD CONDUCTOR? CEDULA CODUCTOR? LICENCIA?
+
+            if (partes[6].equals("R")) {
+
+                Usuario usuario = new Conductor(partes[0], partes[1], partes[2], partes[3], partes[4], partes[5]);
+                usuariosSistema.add(usuario);
+            }
+
         }
+
         return usuariosSistema;
     }
 
-    public static Cliente identificarCliente(String usuario, ArrayList<Usuario> listaUsuariosSistema) {
+    public static Usuario identificarClienteConductor(String usuario, ArrayList<Usuario> listaUsuariosSistema) {
 
         Scanner scanner = new Scanner(System.in);
 
@@ -124,7 +133,7 @@ public class Sistema {
                 cliente.setEdad(edadCliente);
 
                 // Preguntar y establecer el número de tarjeta de crédito del cliente
-                System.out.println("Ingresar el número de su tarjeta de Crédito/Debito: ");
+                System.out.println("Ingresar el numero de su tarjeta de Credito/Debito: ");
                 scanner.nextLine(); // Limpiar el buffer de entrada antes de leer la línea
                 String numeroTarjeta = scanner.nextLine();
                 cliente.setNumTarjetaCredito(numeroTarjeta);
@@ -135,6 +144,107 @@ public class Sistema {
                 return cliente; // Devuelve el cliente identificado
 
             }
-        } return null;
+
+            if (usuarioSistema instanceof Conductor && usuarioSistema.getUser().equals(usuario)) {
+
+                Conductor conductor = (Conductor) usuarioSistema;
+                // DECIDIMOS PREGUNTAR POR LA EDAD AL CONDUCTOR, YA QUE EL ARCHIVO NO ESPECIFICA. 
+                System.out.println("");
+                System.out.println("ANTES DE CONTINUAR  ");
+
+                // Preguntar y establecer la edad del conductor
+                System.out.println("Ingrese su edad:  ");
+                int edadCliente = scanner.nextInt();
+                conductor.setEdad(edadCliente);
+
+                return conductor;
+            }
+        }
+        return null;
     }
+
+    //CONFIGURACION DE MENU PARA EL SISTEMA    
+    public static void ejecutarMenu(Usuario usuario) {
+
+        if (usuario instanceof Cliente) {
+            menuCliente((Cliente) usuario); //DOWNCASTNG
+
+        } else if (usuario instanceof Conductor) {
+            menuConductor((Conductor) usuario); //DOWNCASTING
+        }
+    }
+
+    private static void menuCliente(Cliente cliente) {
+
+        Scanner scanner = new Scanner(System.in);
+
+        do {
+            System.out.println("/****************MENU****************/");
+            System.out.println("/*                                  */");
+            System.out.println("/************************************/");
+            System.out.println("1. Solicitar servicio de taxi");
+            System.out.println("2. Solicitar entrega de encomiendas");
+            System.out.println("3. Consultar servicios");
+            System.out.println("4. Salir");
+            System.out.println("");
+
+            System.out.print("Elija una opcion: ");
+            int opcion = scanner.nextInt();
+
+            switch (opcion) {
+                case 1:
+                    // METODO DE SOLICITAR SERVICIO
+                    break;
+                case 2:
+                    // METODO DE SOLICITAR ENTREGA
+                    break;
+                case 3:
+                    // METODO DE CONSULTAR SERVICIOS
+                    break;
+                case 4:
+                    System.out.println("Gracias por usar nuestrar aplicacion! G8");
+                    System.exit(0);
+                    break;
+                default:
+                    System.out.println("La opcion ingresada no es valida");
+            }
+
+        } while (true);
+    }
+
+    private static void menuConductor(Conductor conductor) {
+
+        Scanner scanner = new Scanner(System.in);
+
+        do {
+            System.out.println("/***********MENU CONDUCTOR***********/");
+            System.out.println("/*                                  */");
+            System.out.println("/************************************/");
+            System.out.println("1. Consultar servicios asignados");
+            System.out.println("2. Datos de su vehiculo");
+            System.out.println("3. Salir");
+            System.out.println("");
+
+            System.out.print("Elija una opcion: ");
+            int opcion = scanner.nextInt();
+
+            switch (opcion) {
+                case 1:
+                    // METODO CONSULTAR SERVICIO CONDUCTOR
+                    break;
+                case 2:
+                    // METODO DATOS DE VEHICULO
+                    break;
+                case 3:
+                    System.out.println("Gracias por usar nuestrar aplicacion! G8");
+                    System.exit(0);
+                    break;
+                default:
+                    System.out.println("La opcion ingresada no es valida");
+            }
+
+        } while (true);
+
+    }
+
 }

@@ -10,7 +10,6 @@ package Principal;
  */
 public class Cliente extends Usuario {
 
-    private int edad;
     private String numTarjetaCredito;
 
     public Cliente() {
@@ -18,14 +17,6 @@ public class Cliente extends Usuario {
 
     public Cliente(String numCedula, String nombre, String apellido, String user, String contrasena,String celular) {
         super(numCedula, nombre, apellido, user, contrasena,celular);
-    }
-
-    public int getEdad() {
-        return edad;
-    }
-
-    public void setEdad(int edad) {
-        this.edad = edad;
     }
 
     public String getNumTarjetaCredito() {
