@@ -11,13 +11,29 @@ import java.util.Date;
  *
  * @author cesar
  */
-public class Servicios {
+public abstract class Servicios {
     protected Ruta ruta;
     protected Date fecha  ;
     protected Conductor conductor;
     protected TipoServicio tipoServicio;
     protected double valorPagar;
 
+    //CONSTRUCTORES
+    public Servicios(){
+        
+    }
+    public Servicios(Ruta ruta, Date fecha, Conductor conductor, TipoServicio tipoServicio, double valorPagar){
+        this.ruta = ruta;
+        this.fecha = fecha;
+        this.conductor = conductor;
+        this.tipoServicio = tipoServicio;
+        this.valorPagar = valorPagar;
+    }
+    
+    
+    
+    //GETTERS Y SETTERS
+    
     public Date getFecha() {
         return fecha;
     }
