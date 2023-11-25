@@ -61,7 +61,8 @@ public class Sistema {
         // USUARIOS PARA SEGUIR CON EL PROGRAMA 
         ArrayList <Usuario> usuariosSistema = crearUsuariosDelSistema();
         
-        identificarCliente(usuarioConsola, usuariosSistema);
+        Cliente cliente = identificarCliente(usuarioConsola, usuariosSistema);
+        
     }
 
     // ESTE METODO SOLO VALIDA QUE EL USUARIO QUE ES INGRESADO  POR CONSOLA SEA
@@ -103,7 +104,7 @@ public class Sistema {
         return usuariosSistema;
     }
 
-    public static Usuario identificarCliente(String usuario, ArrayList<Usuario> listaUsuariosSistema) {
+    public static Cliente identificarCliente(String usuario, ArrayList<Usuario> listaUsuariosSistema) {
 
         Scanner scanner = new Scanner(System.in);
 
