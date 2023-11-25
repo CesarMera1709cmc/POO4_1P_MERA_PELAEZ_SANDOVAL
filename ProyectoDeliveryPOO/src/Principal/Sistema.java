@@ -54,15 +54,14 @@ public class Sistema {
             }
         } while (!validarUsuarioSistema(usuarioConsola, usuarioContrasena));
 
-        System.out.println("INICIO DE SESION CORRECTO." );
+        System.out.println("INICIO DE SESION CORRECTO.");
         System.out.println("BIENVENID@ : " + usuarioConsola);
 
-     // UNA VEZ VALIDADO EL USUARIO; ES NECESARIO UN METODO QUE CONTRUYA UNA LISTA DE    
-     // USUARIOS PARA SEGUIR CON EL PROGRAMA 
-      
-     
+        // UNA VEZ VALIDADO EL USUARIO; ES NECESARIO UN METODO QUE CONTRUYA UNA LISTA DE    
+        // USUARIOS PARA SEGUIR CON EL PROGRAMA 
+        ArrayList <Usuario> usuariosSistema = crearUsuariosDelSistema();
         
-        
+        Cliente cliente = identificarCliente(usuarioConsola, usuariosSistema);
         
     }
 
@@ -84,4 +83,58 @@ public class Sistema {
 
     }
 
+    public static ArrayList<Usuario> crearUsuariosDelSistema() {
+
+        ArrayList<String> usuarios = ManejoArchivos.LeeFichero("usuarios.txt");
+
+        ArrayList<Usuario> usuariosSistema = new ArrayList();
+
+        for (String lineaUsuarios : usuarios) {
+
+            String[] partes = lineaUsuarios.split(",");
+
+            if (partes[6].equals("C")) {
+
+                Usuario usuario = new Cliente(partes[0], partes[1], partes[2], partes[3], partes[4], partes[5]);
+
+                usuariosSistema.add(usuario);
+
+            } // PREGUNTA : EDAD CONDUCTOR? CEDULA CODUCTOR? LICENCIA?
+        }
+        return usuariosSistema;
+    }
+
+    public static Cliente identificarCliente(String usuario, ArrayList<Usuario> listaUsuariosSistema) {
+
+        Scanner scanner = new Scanner(System.in);
+
+        for (int i = 0; i < listaUsuariosSistema.size(); i++) {
+            Usuario usuarioSistema = listaUsuariosSistema.get(i);
+
+            if (usuarioSistema instanceof Cliente && usuarioSistema.getUser().equals(usuario)) {
+                Cliente cliente = (Cliente) usuarioSistema;
+
+                // Preguntar al Cliente la edad y Tarjeta de crédito
+                System.out.println("");
+                System.out.println("ANTES DE CONTINUAR  ");
+
+                // Preguntar y establecer la edad del cliente
+                System.out.println("Ingrese su edad:  ");
+                int edadCliente = scanner.nextInt();
+                cliente.setEdad(edadCliente);
+
+                // Preguntar y establecer el número de tarjeta de crédito del cliente
+                System.out.println("Ingresar el número de su tarjeta de Crédito/Debito: ");
+                scanner.nextLine(); // Limpiar el buffer de entrada antes de leer la línea
+                String numeroTarjeta = scanner.nextLine();
+                cliente.setNumTarjetaCredito(numeroTarjeta);
+
+                System.out.println("GRACIAS POR COMPLETAR LOS DATOS FALTANTES.");
+                System.out.println("");
+
+                return cliente; // Devuelve el cliente identificado
+
+            }
+        } return null;
+    }
 }

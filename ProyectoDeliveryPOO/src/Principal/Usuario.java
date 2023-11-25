@@ -11,16 +11,27 @@ import Principal.enums.TipoUsuario;
  * @author frank
  */
 public class Usuario {
-
+    
+    protected String numCedula;
     protected String nombre;
     protected String apellido;
-    protected String numCedula;
-    protected String contrasena;
     protected String user;
-    protected TipoUsuario tipoUsuario;
-
+    protected String contrasena;
+    protected String celular;
+    
     public Usuario() {
     }
+
+    public Usuario(String numCedula, String nombre, String apellido, String user, String contrasena, String celular) {
+        this.numCedula = numCedula;
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.user = user;
+        this.contrasena = contrasena;
+        this.celular= celular;
+    }
+    
+    
 
     // Getters & Setters
     public String getNombre() {
@@ -63,13 +74,6 @@ public class Usuario {
         this.user = user;
     }
 
-    public TipoUsuario getTipoUsuario() {
-        return tipoUsuario;
-    }
-
-    public void setTipoUsuario(TipoUsuario tipoUsuario) {
-        this.tipoUsuario = tipoUsuario;
-    }
     /*
     @Override
     public String toString() {

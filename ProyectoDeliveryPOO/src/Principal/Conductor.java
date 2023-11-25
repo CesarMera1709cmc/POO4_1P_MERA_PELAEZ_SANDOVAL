@@ -20,6 +20,12 @@ public class Conductor extends Usuario {
     public Conductor() {
     }
 
+    public Conductor(String numCedula, String nombre, String apellido, String user, String contrasena, String celular) {
+        super(numCedula, nombre, apellido, user, contrasena, celular);
+    }
+
+    
+
     // Getters & Setters  ----> Conductor
     public String getNumLicencia() {
         return numLicencia;
