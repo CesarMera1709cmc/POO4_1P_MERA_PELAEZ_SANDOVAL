@@ -13,7 +13,7 @@ import java.util.Scanner;
  * @author frank
  */
 public class Sistema {
-
+    
     /**
      * COMENTO PARA PROBAR
      *
@@ -190,9 +190,9 @@ public class Sistema {
             menuConductor((Conductor) usuario); //DOWNCASTING
         }
     }
-
+   
     private static void menuCliente(Cliente cliente) {
-
+        ArrayList<Servicios> servicios = new ArrayList<>();
         Scanner scanner = new Scanner(System.in);
 
         do {
@@ -211,6 +211,10 @@ public class Sistema {
             switch (opcion) {
                 case 1:
                     // METODO DE SOLICITAR SERVICIO
+                    Servicios viajeTaxi = cliente.solicitarViajeTaxi();
+                    if (viajeTaxi!=null){
+                        servicios.add(viajeTaxi);
+                    }
                     break;
                 case 2:
                     // METODO DE SOLICITAR ENTREGA

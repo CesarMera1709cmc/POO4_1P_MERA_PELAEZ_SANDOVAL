@@ -6,6 +6,7 @@ package Principal;
 
 import Principal.enums.TipoServicio;
 import java.util.Date;
+import java.util.Scanner;
 
 /**
  *
@@ -13,31 +14,30 @@ import java.util.Date;
  */
 public abstract class Servicios {
     protected Ruta ruta;
-    protected String fecha  ;
+    protected Date fecha;
+    protected String hora;
     protected Conductor conductor;
-    protected TipoServicio tipoServicio;
     protected double valorPagar;
     
     //CONSTRUCTORES
     public Servicios(){
         
     }
-    public Servicios(Ruta ruta, String fecha, Conductor conductor, TipoServicio tipoServicio, double valorPagar){
+    public Servicios(Ruta ruta, Date fecha, String hora, Conductor conductor, double valorPagar){
         this.ruta = ruta;
         this.fecha = fecha;
+        this.hora = hora;
         this.conductor = conductor;
-        this.tipoServicio = tipoServicio;
         this.valorPagar = valorPagar;
     }
+    @Override
     public String toString(){
-        return "/***********************************************/\nTipo: "+tipoServicio+"\nFecha: "+fecha+"\n"+ruta;
+        return "/***********************************************\nFecha: "+fecha+"\nHora: "+hora+"\n"+ruta;
     }
-    
-    
     
     //GETTERS Y SETTERS
     
-    public String getFecha() {
+    public Date getFecha() {
         return fecha;
     }
 
@@ -45,15 +45,11 @@ public abstract class Servicios {
         return conductor;
     }
 
-    public TipoServicio getTipoServicio() {
-        return tipoServicio;
-    }
-
     public double getValorPagar() {
         return valorPagar;
     }
 
-    public void setFecha(String fecha) {
+    public void setFecha(Date fecha) {
         this.fecha = fecha;
     }
 
@@ -61,14 +57,10 @@ public abstract class Servicios {
         this.conductor = conductor;
     }
 
-    public void setTipoServicio(TipoServicio tipoServicio) {
-        this.tipoServicio = tipoServicio;
-    }
-
     public void setValorPagar(double valorPagar) {
         this.valorPagar = valorPagar;
     }
-    
+          
     
     
             

@@ -4,13 +4,24 @@
  */
 package Principal;
 
+import Principal.enums.TipoServicio;
+import java.util.Date;
+
 /**
  *
  * @author cesar
  */
-public class ViajeTaxi {
+public class ViajeTaxi extends Servicios {
     private int numPersonas;
-
+    //CONSTRUCTOR
+    public ViajeTaxi(){
+        
+    }
+    public ViajeTaxi(Ruta ruta, Date fecha, String hora, Conductor conductor, double valorPagar, int numPersonas){
+        super(ruta, fecha, hora, conductor, valorPagar);
+        this.numPersonas = numPersonas;
+    }
+    //GETTERS Y SETTERS
     public int getNumPersonas() {
         return numPersonas;
     }

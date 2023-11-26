@@ -9,5 +9,5 @@ package Principal.enums;
  * @author cesar
  */
 public enum TipoEncomienda {
-    MEDICAMENTOS,DOCUMENTOS,ROPA;
+    MEDICAMENTOS,DOCUMENTOS,ROPA
 }

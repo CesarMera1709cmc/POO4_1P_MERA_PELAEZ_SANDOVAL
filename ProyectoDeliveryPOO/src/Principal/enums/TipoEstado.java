@@ -9,5 +9,6 @@ package Principal.enums;
  * @author Pc
  */
 public enum TipoEstado {
-    
+    O, D
+    //O: Ocupado    D: Disponible
 }
