@@ -1,9 +1,7 @@
 package Principal;
 
-import static Principal.Sistema.crearUsuariosDelSistema;
 import Principal.enums.TipoEstado;
 import Principal.enums.TipoFormaPago;
-import Principal.enums.TipoServicio;
 import Principal.enums.TipoVehiculo;
 import java.util.ArrayList;
 import java.util.Date;
@@ -42,14 +40,14 @@ public class Cliente extends Usuario {
     public Servicios solicitarViajeTaxi(){
         Scanner sc = new Scanner(System.in);
         //CREACION DE LA RUTA
-        System.out.println("INGRESE DATOS DE LA RUTA");
+        System.out.println("\nINGRESE DATOS DE LA RUTA");
         System.out.print("Origen: ");
         String origen = sc.nextLine();
         System.out.print("Destino: ");
         String destino = sc.nextLine();
         Ruta ruta = new Ruta(origen, destino);
         //CREACION DE LA FECHA
-        System.out.println("INGRESE DATOS DE LA FECHA DEL VIAJE");
+        System.out.println("\nINGRESE DATOS DE LA FECHA DEL VIAJE");
         boolean entradaValida = false;
         int anio = 0;
         int mes = 0;
@@ -61,7 +59,7 @@ public class Cliente extends Usuario {
                 if (anio>=2023){
                     entradaValida = true;
                 }else{
-                    System.out.println("El año ingresado no esta en un rango valido");
+                    System.out.println("El anio ingresado no esta en un rango valido");
                 }
             }else{
                 System.out.println("Por favor, ingrese un numero entero");
@@ -106,7 +104,7 @@ public class Cliente extends Usuario {
             System.out.print("Ingrese la hora (0-23):");
             if (sc.hasNextInt()){
                 hora = sc.nextInt();
-                if (hora>=0 && dia<=23){
+                if (hora>=0 && hora<=23){
                     entradaValida = true;
                 }else{
                     System.out.println("La hora ingresada no esta en un rango valido");
@@ -120,8 +118,8 @@ public class Cliente extends Usuario {
         do{
             System.out.print("Ingrese los minutos (0-59):");
             if (sc.hasNextInt()){
-                hora = sc.nextInt();
-                if (hora>=0 && dia<=59){
+                minutos = sc.nextInt();
+                if (minutos>=0 && minutos<=59){
                     entradaValida = true;
                 }else{
                     System.out.println("Los minutos ingresados no estan en un rango valido");
@@ -132,8 +130,9 @@ public class Cliente extends Usuario {
             }
         }while(!entradaValida);
         String horaMinutos = hora+":"+minutos;
+        sc.nextLine();
         //INGRESO METODO DE PAGO
-        System.out.println("INGRESE LA FORMA DE PAGO");
+        System.out.println("\nINGRESE LA FORMA DE PAGO");
         String opcion;
         TipoFormaPago formaPago = TipoFormaPago.E;
         do{
@@ -150,7 +149,7 @@ public class Cliente extends Usuario {
             }
         }while(!opcion.equalsIgnoreCase("S")&&!opcion.equalsIgnoreCase("N"));
         //INGRESO NUMERO DE VIAJEROS
-        System.out.println("INGRESE LA CANTIDAD DE VIAJEROS");
+        System.out.println("\nINGRESE LA CANTIDAD DE VIAJEROS");
         int cantidadViajeros = sc.nextInt();
         sc.nextLine();
         //CALCULO DEL VALOR A PAGAR
@@ -175,7 +174,7 @@ public class Cliente extends Usuario {
         //CONFIRMACIÓN
         String opcion2;
         do{
-            System.out.print("Esta seguro de confirmar su viaje? (S/N):");
+            System.out.print("\nEsta seguro de confirmar su viaje? (S/N):");
             opcion2 = sc.nextLine();
             if (opcion2.equalsIgnoreCase("S")){
                 System.out.println("Servicio confirmado");
@@ -183,7 +182,7 @@ public class Cliente extends Usuario {
                 Servicios servicioTaxi = new ViajeTaxi(ruta,fecha,horaMinutos,conductor,valorAPagar,cantidadViajeros);
                 return servicioTaxi;
             }else if(opcion2.equalsIgnoreCase("N")){
-                System.out.println("Servicio cancelado");
+                System.out.println("SERVICIO CANCELADO");
                 return null;
             }else{
                 System.out.println("La opción ingresada no es correcta");

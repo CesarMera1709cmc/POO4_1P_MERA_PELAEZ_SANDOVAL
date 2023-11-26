@@ -4,6 +4,8 @@ package Principal;
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
+import Principal.enums.TipoEstado;
+import Principal.enums.TipoVehiculo;
 import Principal.lecturaArchivos.ManejoArchivos;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -14,19 +16,6 @@ import java.util.Scanner;
  */
 public class Sistema {
     
-    /**
-     * COMENTO PARA PROBAR
-     *
-     * public ArrayList<Vehiculo> crearVehiculos() { String nombrearchivo =
-     * "";//AUN NO SE TIENE ARCHIVO DE VEHICULOS ArrayList<String>
-     * datosVehiculos = manejoArchivos.LeeFichero(nombrearchivo);
-     * ArrayList<Vehiculo> vehiculos = new ArrayList<>(); for (String linea :
-     * datosVehiculos) { String[] datos = linea.split(","); Vehiculo vehiculo =
-     * new Vehiculo(datos[0], datos[1], datos[2], datos[3], datos[4]);
-     * vehiculos.add(vehiculo); } return vehiculos; }
-     *
-     *
-     */
     public static void main(String[] args) {
 
         Scanner scanner = new Scanner(System.in);
@@ -83,7 +72,26 @@ public class Sistema {
         return false;
 
     }
-
+    //METODO CREAR VEHICULOS
+    public static ArrayList<Vehiculo> crearVehiculos() { 
+        
+        ArrayList<String> datosVehiculos = ManejoArchivos.LeeFichero("vehiculos.txt");
+        
+        ArrayList<Vehiculo> vehiculos = new ArrayList<>(); 
+        
+        for (String lineaVehiculos : datosVehiculos) { 
+            
+            String[] datos = lineaVehiculos.split(","); 
+            
+            Vehiculo vehiculo = new Vehiculo(datos[0], datos[1], datos[2], datos[3], datos[4]);
+            
+        vehiculos.add(vehiculo); 
+        
+        } 
+        
+        return vehiculos; 
+    }
+    //METODO PARA CREAR USUARIOS DEL SISTEMA
     public static ArrayList<Usuario> crearUsuariosDelSistema() {
 
         ArrayList<String> usuarios = ManejoArchivos.LeeFichero("usuarios.txt");
@@ -96,15 +104,37 @@ public class Sistema {
 
             if (partes[6].equals("C")) {
 
-                Usuario usuario = new Cliente(partes[0], partes[1], partes[2], partes[3], partes[4], partes[5]);
-
+                Cliente usuario = new Cliente(partes[0], partes[1], partes[2], partes[3], partes[4], partes[5]);
+                
                 usuariosSistema.add(usuario);
 
             } // PREGUNTA : EDAD CONDUCTOR? CEDULA CODUCTOR? LICENCIA?
 
             if (partes[6].equals("R")) {
-
-                Usuario usuario = new Conductor(partes[0], partes[1], partes[2], partes[3], partes[4], partes[5]);
+                
+                ArrayList<String> lineasConductores = ManejoArchivos.LeeFichero("conductores.txt");
+                String codigoVehiculo = "";
+                
+                Conductor usuario = new Conductor(partes[0], partes[1], partes[2], partes[3], partes[4], partes[5]);
+                
+                for (String linea: lineasConductores){
+                    String[] datosConductores = linea.split(",");
+                    if (partes[0].equals(datosConductores[0])){
+                        usuario.setEstado(datosConductores[1]);
+                        codigoVehiculo = datosConductores[2];
+                    }
+                }
+                
+                
+                ArrayList<Vehiculo> vehiculos = crearVehiculos();
+                
+                for (Vehiculo vehiculo: vehiculos){
+                    if (vehiculo.getCodigoVehiculo().equals(codigoVehiculo)){
+                        usuario.setVehiculo(vehiculo);
+                    }
+                }
+                
+                
                 usuariosSistema.add(usuario);
             }
 
@@ -135,7 +165,8 @@ public class Sistema {
 
         return edad;
     }
-
+    
+        
     public static Usuario identificarClienteConductor(String usuario, ArrayList<Usuario> listaUsuariosSistema) {
 
         Scanner scanner = new Scanner(System.in);
@@ -162,9 +193,7 @@ public class Sistema {
 
                 return cliente; 
 
-            }
-
-            if (usuarioSistema instanceof Conductor && usuarioSistema.getUser().equals(usuario)) {
+            }else if (usuarioSistema instanceof Conductor && usuarioSistema.getUser().equals(usuario)) {
 
                 Conductor conductor = (Conductor) usuarioSistema;
                 // DECIDIMOS PREGUNTAR POR LA EDAD AL CONDUCTOR, YA QUE EL ARCHIVO PDF NO ESPECIFICA. 
@@ -252,9 +281,11 @@ public class Sistema {
             switch (opcion) {
                 case 1:
                     // METODO CONSULTAR SERVICIO CONDUCTOR
+                    
                     break;
                 case 2:
                     // METODO DATOS DE VEHICULO
+                    System.out.println(conductor.getVehiculo()+"\n");;
                     break;
                 case 3:
                     System.out.println("Gracias por usar nuestrar aplicacion! G8");

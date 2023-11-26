@@ -51,5 +51,5 @@ public class Conductor extends Usuario {
     public void setEstado(String estado) {
         this.estado = TipoEstado.valueOf(estado);
     }
-
+    
 }

@@ -1,0 +1,4 @@
+cedula,estado,codigoVehículo
+0986353323,D,23
+0762637343,O,12
+1205454451,D,15

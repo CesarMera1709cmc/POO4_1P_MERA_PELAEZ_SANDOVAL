@@ -11,11 +11,24 @@ import Principal.enums.TipoVehiculo;
  * @author frank
  */
 public class Vehiculo {
+    private String codigoVehiculo;
     private String placa;
     private String modelo;
     private String marca;
     private TipoVehiculo tipoVehiculo;
+
+    public Vehiculo(String codigoVehiculo, String placa, String modelo, String marca, String tipoVehiculo) {
+        this.codigoVehiculo = codigoVehiculo;
+        this.placa = placa;
+        this.modelo = modelo;
+        this.marca = marca;
+        this.tipoVehiculo = TipoVehiculo.valueOf(tipoVehiculo);
+    }
+    
     //GETTERS Y SETTERS
+    public String getCodigoVehiculo(){
+        return this.codigoVehiculo;
+    }
     public String getPlaca(){
         return this.placa;
     }
@@ -27,6 +40,9 @@ public class Vehiculo {
     }
     public TipoVehiculo getTipoVehiculo(){
         return this.tipoVehiculo;
+    }
+    public void setCodigoVehiculo(String codigoVehiculo){
+        this.codigoVehiculo = codigoVehiculo;
     }
     public void setPlaca(String placa){
         this.placa = placa;
@@ -40,5 +56,10 @@ public class Vehiculo {
     public void setPlaca(TipoVehiculo tipoVehiculo){
         this.tipoVehiculo = tipoVehiculo;
     }
-    
+    //TO STRING
+    @Override
+    public String toString(){
+        return "Vehiculo "+marca+" "+modelo+
+                "\nPlaca: "+placa;
+    }
 }

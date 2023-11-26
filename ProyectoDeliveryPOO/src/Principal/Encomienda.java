@@ -5,7 +5,6 @@
 package Principal;
 
 import Principal.enums.TipoEncomienda;
-import Principal.enums.TipoServicio;
 import java.util.Date;
 
 /**
