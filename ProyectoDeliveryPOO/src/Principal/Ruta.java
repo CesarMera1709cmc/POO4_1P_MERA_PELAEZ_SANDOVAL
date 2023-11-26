@@ -11,6 +11,14 @@ package Principal;
 public class Ruta {
     private String origen;
     private String destino;
+    //CONSTRUCTORES
+    public Ruta(){
+        
+    }
+    public Ruta(String origen, String destino){
+        this.origen = origen;
+        this.destino = destino;
+    }
     //GETTERS Y SETTERS
     public String getOrigen(){
         return this.origen;

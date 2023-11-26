@@ -6,6 +6,7 @@ package Principal;
 
 import Principal.enums.TipoServicio;
 import java.util.Date;
+import java.util.Scanner;
 
 /**
  *
@@ -13,7 +14,8 @@ import java.util.Date;
  */
 public abstract class Servicios {
     protected Ruta ruta;
-    protected Date fecha  ;
+    protected Date fecha;
+    protected String hora;
     protected Conductor conductor;
     protected TipoServicio tipoServicio;
     protected double valorPagar;
@@ -22,15 +24,14 @@ public abstract class Servicios {
     public Servicios(){
         
     }
-    public Servicios(Ruta ruta, Date fecha, Conductor conductor, TipoServicio tipoServicio, double valorPagar){
+    public Servicios(Ruta ruta, Date fecha, String hora, Conductor conductor, TipoServicio tipoServicio, double valorPagar){
         this.ruta = ruta;
         this.fecha = fecha;
+        this.hora = hora;
         this.conductor = conductor;
         this.tipoServicio = tipoServicio;
         this.valorPagar = valorPagar;
     }
-    
-    
     
     //GETTERS Y SETTERS
     
@@ -65,7 +66,7 @@ public abstract class Servicios {
     public void setValorPagar(double valorPagar) {
         this.valorPagar = valorPagar;
     }
-    
+          
     
     
             
