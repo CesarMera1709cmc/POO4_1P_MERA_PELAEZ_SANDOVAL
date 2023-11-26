@@ -17,8 +17,8 @@ public class ViajeTaxi extends Servicios {
     public ViajeTaxi(){
         
     }
-    public ViajeTaxi(Ruta ruta, Date fecha, String hora, Conductor conductor, TipoServicio tipoServicio, double valorPagar, int numPersonas){
-        super(ruta, fecha, hora, conductor, tipoServicio, valorPagar);
+    public ViajeTaxi(Ruta ruta, Date fecha, String hora, Conductor conductor, double valorPagar, int numPersonas){
+        super(ruta, fecha, hora, conductor, valorPagar);
         this.numPersonas = numPersonas;
     }
     //GETTERS Y SETTERS

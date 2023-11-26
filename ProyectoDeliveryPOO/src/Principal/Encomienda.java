@@ -18,12 +18,11 @@ public class Encomienda extends Servicios {
     private double pesoKG;
     protected String hora;
 
-    public Encomienda(Ruta ruta, String fecha, Conductor conductor, TipoServicio tipoServicio, double valorPagar,int cantProductos, TipoEncomienda tipoEncomienda, double pesoKG, String hora) {
-        super(ruta,fecha,conductor, tipoServicio,valorPagar);
+    public Encomienda(Ruta ruta, Date fecha, Conductor conductor, double valorPagar,int cantProductos, TipoEncomienda tipoEncomienda, double pesoKG, String hora) {
+        super(ruta,fecha,hora,conductor,valorPagar);
         this.cantProductos = cantProductos;
         this.tipoEncomienda = tipoEncomienda;
         this.pesoKG = pesoKG;
-        this.hora = hora;
     }
     
     public int getCantProductos() {

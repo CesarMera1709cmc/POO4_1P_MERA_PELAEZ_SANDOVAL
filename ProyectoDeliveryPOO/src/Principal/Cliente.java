@@ -39,7 +39,7 @@ public class Cliente extends Usuario {
     
     
     //METODO SOLICITAR SERVICIO TAXI
-    public void servicioViajeTaxi(){
+    public Servicios solicitarViajeTaxi(){
         Scanner sc = new Scanner(System.in);
         //CREACION DE LA RUTA
         System.out.println("INGRESE DATOS DE LA RUTA");
@@ -50,18 +50,88 @@ public class Cliente extends Usuario {
         Ruta ruta = new Ruta(origen, destino);
         //CREACION DE LA FECHA
         System.out.println("INGRESE DATOS DE LA FECHA DEL VIAJE");
-        System.out.print("Ingrese el año: ");
-        int anio = sc.nextInt();
-        sc.nextLine();
-        System.out.print("Ingrese el mes: ");
-        int mes = sc.nextInt();
-        sc.nextLine();
-        System.out.print("Ingrese el dia: ");
-        int dia = sc.nextInt();
-        sc.nextLine();
+        boolean entradaValida = false;
+        int anio = 0;
+        int mes = 0;
+        int dia = 0;
+        do{
+            System.out.print("Ingrese el anio: ");
+            if (sc.hasNextInt()){
+                anio = sc.nextInt();
+                if (anio>=2023){
+                    entradaValida = true;
+                }else{
+                    System.out.println("El año ingresado no esta en un rango valido");
+                }
+            }else{
+                System.out.println("Por favor, ingrese un numero entero");
+                sc.next();
+            }
+        }while(!entradaValida);
+        entradaValida = false;
+        do{
+            System.out.print("Ingrese el mes: ");
+            if (sc.hasNextInt()){
+                mes = sc.nextInt();
+                if (mes>=1 && mes<=12){
+                    entradaValida = true;
+                }else{
+                    System.out.println("El mes ingresado no esta en un rango valido");
+                }
+            }else{
+                System.out.println("Por favor, ingrese un numero entero");
+                sc.next();
+            }
+        }while(!entradaValida);
+        entradaValida = false;
+        do{
+            System.out.print("Ingrese el dia: ");
+            if (sc.hasNextInt()){
+                dia = sc.nextInt();
+                if (dia>=1 && dia<=31){
+                    entradaValida = true;
+                }else{
+                    System.out.println("El dia ingresado no esta en un rango valido");
+                }
+            }else{
+                System.out.println("Por favor, ingrese un numero entero");
+                sc.next();
+            }
+        }while(!entradaValida);
         Date fecha = new Date(anio, mes, dia);
-        System.out.println("Ingrese la hora con el formato HH:mm");
-        String hora = sc.nextLine();
+        int hora = 0;
+        int minutos = 0;
+        entradaValida = false;
+        do{
+            System.out.print("Ingrese la hora (0-23):");
+            if (sc.hasNextInt()){
+                hora = sc.nextInt();
+                if (hora>=0 && dia<=23){
+                    entradaValida = true;
+                }else{
+                    System.out.println("La hora ingresada no esta en un rango valido");
+                }
+            }else{
+                System.out.println("Por favor, ingrese un numero entero");
+                sc.next();
+            }
+        }while(!entradaValida);
+        entradaValida = false;
+        do{
+            System.out.print("Ingrese los minutos (0-59):");
+            if (sc.hasNextInt()){
+                hora = sc.nextInt();
+                if (hora>=0 && dia<=59){
+                    entradaValida = true;
+                }else{
+                    System.out.println("Los minutos ingresados no estan en un rango valido");
+                }
+            }else{
+                System.out.println("Por favor, ingrese un numero entero");
+                sc.next();
+            }
+        }while(!entradaValida);
+        String horaMinutos = hora+":"+minutos;
         //INGRESO METODO DE PAGO
         System.out.println("INGRESE LA FORMA DE PAGO");
         String opcion;
@@ -105,18 +175,20 @@ public class Cliente extends Usuario {
         //CONFIRMACIÓN
         String opcion2;
         do{
-            System.out.print("Está seguro de confirmar su viaje? (S/N):");
+            System.out.print("Esta seguro de confirmar su viaje? (S/N):");
             opcion2 = sc.nextLine();
-            switch (opcion2) {
-                case "S" -> {
-                    System.out.println("Servicio confirmado");
-                    conductor.setEstado("O");
-                    ViajeTaxi servicioTaxi = new ViajeTaxi(ruta,fecha,hora,conductor,TipoServicio.T,valorAPagar,cantidadViajeros);
-                }
-                case "N" -> System.out.println("Servicio cancelado");
-                default -> System.out.println("La opción ingresada no es correcta");
+            if (opcion2.equalsIgnoreCase("S")){
+                System.out.println("Servicio confirmado");
+                conductor.setEstado("O");
+                Servicios servicioTaxi = new ViajeTaxi(ruta,fecha,horaMinutos,conductor,valorAPagar,cantidadViajeros);
+                return servicioTaxi;
+            }else if(opcion2.equalsIgnoreCase("N")){
+                System.out.println("Servicio cancelado");
+                return null;
+            }else{
+                System.out.println("La opción ingresada no es correcta");
             }
         }while(!opcion2.equalsIgnoreCase("S")&&!opcion2.equalsIgnoreCase("N"));
-        
+        return null;
     }
 }
