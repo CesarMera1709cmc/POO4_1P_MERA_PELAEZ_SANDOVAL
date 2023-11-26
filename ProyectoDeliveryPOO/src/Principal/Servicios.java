@@ -13,28 +13,31 @@ import java.util.Date;
  */
 public abstract class Servicios {
     protected Ruta ruta;
-    protected Date fecha  ;
+    protected String fecha  ;
     protected Conductor conductor;
     protected TipoServicio tipoServicio;
     protected double valorPagar;
-
+    
     //CONSTRUCTORES
     public Servicios(){
         
     }
-    public Servicios(Ruta ruta, Date fecha, Conductor conductor, TipoServicio tipoServicio, double valorPagar){
+    public Servicios(Ruta ruta, String fecha, Conductor conductor, TipoServicio tipoServicio, double valorPagar){
         this.ruta = ruta;
         this.fecha = fecha;
         this.conductor = conductor;
         this.tipoServicio = tipoServicio;
         this.valorPagar = valorPagar;
     }
+    public String toString(){
+        return "/***********************************************/\nTipo: "+tipoServicio+"\nFecha: "+fecha+"\n"+ruta;
+    }
     
     
     
     //GETTERS Y SETTERS
     
-    public Date getFecha() {
+    public String getFecha() {
         return fecha;
     }
 
@@ -50,7 +53,7 @@ public abstract class Servicios {
         return valorPagar;
     }
 
-    public void setFecha(Date fecha) {
+    public void setFecha(String fecha) {
         this.fecha = fecha;
     }
 

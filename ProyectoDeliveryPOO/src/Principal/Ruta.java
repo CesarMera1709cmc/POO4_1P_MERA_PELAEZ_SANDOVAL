@@ -11,6 +11,10 @@ package Principal;
 public class Ruta {
     private String origen;
     private String destino;
+    public Ruta(String origen,String destino){
+        this.origen=origen;
+        this.destino=destino;
+    }
     //GETTERS Y SETTERS
     public String getOrigen(){
         return this.origen;
@@ -23,5 +27,8 @@ public class Ruta {
     }
     public void setDestino(String destino){
         this.destino = destino;
+    }
+    public String toString(){
+        return "Desde: "+origen+"\nHasta: "+destino;
     }
 }
