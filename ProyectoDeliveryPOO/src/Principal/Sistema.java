@@ -57,7 +57,7 @@ public class Sistema {
         System.out.println("INICIO DE SESION CORRECTO.");
         System.out.println("BIENVENID@ : " + usuarioConsola);
 
-        // UNA VEZ VALIDADO EL USUARIO; ES NECESARIO UN METODO QUE CONTRUYA UNA LISTA DE    
+        // UNA VEZ VALIDADO EL USUARIO; ES NECESARIO UN METODO QUE CONSTRUYA UNA LISTA DE    
         // USUARIOS PARA SEGUIR CON EL PROGRAMA 
         ArrayList<Usuario> usuariosSistema = crearUsuariosDelSistema();
 
@@ -113,6 +113,29 @@ public class Sistema {
         return usuariosSistema;
     }
 
+    public static int ingresarEdad() {
+        Scanner scanner = new Scanner(System.in);
+        int edad = 0;
+        boolean entradaValida = false;
+
+        do {
+            System.out.println("Ingrese su edad: ");
+            if (scanner.hasNextInt()) { // VALIDA QUE LA ENTRADA SEA UN NUMERO ENTERO
+                edad = scanner.nextInt();
+                if (edad >= 15 && edad <= 100) {  // VALIDA LA EDAD EN UN RANGO CORRECTO Y ADECUADO
+                    entradaValida = true;
+                } else {
+                    System.out.println("La edad ingresada no es esta en un rango valido");
+                }
+            } else {
+                System.out.println("Por favor, ingrese un numero entero");
+                scanner.next(); 
+            }
+        } while (!entradaValida);
+
+        return edad;
+    }
+
     public static Usuario identificarClienteConductor(String usuario, ArrayList<Usuario> listaUsuariosSistema) {
 
         Scanner scanner = new Scanner(System.in);
@@ -123,38 +146,32 @@ public class Sistema {
             if (usuarioSistema instanceof Cliente && usuarioSistema.getUser().equals(usuario)) {
                 Cliente cliente = (Cliente) usuarioSistema;
 
-                // Preguntar al Cliente la edad y Tarjeta de crédito
                 System.out.println("");
                 System.out.println("ANTES DE CONTINUAR  ");
 
-                // Preguntar y establecer la edad del cliente
-                System.out.println("Ingrese su edad:  ");
-                int edadCliente = scanner.nextInt();
+                int edadCliente = ingresarEdad();
                 cliente.setEdad(edadCliente);
 
-                // Preguntar y establecer el número de tarjeta de crédito del cliente
                 System.out.println("Ingresar el numero de su tarjeta de Credito/Debito: ");
-                scanner.nextLine(); // Limpiar el buffer de entrada antes de leer la línea
+                scanner.nextLine(); 
                 String numeroTarjeta = scanner.nextLine();
                 cliente.setNumTarjetaCredito(numeroTarjeta);
 
                 System.out.println("GRACIAS POR COMPLETAR LOS DATOS FALTANTES.");
                 System.out.println("");
 
-                return cliente; // Devuelve el cliente identificado
+                return cliente; 
 
             }
 
             if (usuarioSistema instanceof Conductor && usuarioSistema.getUser().equals(usuario)) {
 
                 Conductor conductor = (Conductor) usuarioSistema;
-                // DECIDIMOS PREGUNTAR POR LA EDAD AL CONDUCTOR, YA QUE EL ARCHIVO NO ESPECIFICA. 
+                // DECIDIMOS PREGUNTAR POR LA EDAD AL CONDUCTOR, YA QUE EL ARCHIVO PDF NO ESPECIFICA. 
                 System.out.println("");
                 System.out.println("ANTES DE CONTINUAR  ");
 
-                // Preguntar y establecer la edad del conductor
-                System.out.println("Ingrese su edad:  ");
-                int edadCliente = scanner.nextInt();
+                int edadCliente = ingresarEdad();
                 conductor.setEdad(edadCliente);
 
                 return conductor;
