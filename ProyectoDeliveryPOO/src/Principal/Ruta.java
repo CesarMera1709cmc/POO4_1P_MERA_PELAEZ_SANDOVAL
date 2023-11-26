@@ -32,4 +32,8 @@ public class Ruta {
     public void setDestino(String destino){
         this.destino = destino;
     }
+    @Override
+    public String toString(){
+        return "Desde: "+origen+"\nHasta: "+destino;
+    }
 }

@@ -17,20 +17,22 @@ public abstract class Servicios {
     protected Date fecha;
     protected String hora;
     protected Conductor conductor;
-    protected TipoServicio tipoServicio;
     protected double valorPagar;
-
+    
     //CONSTRUCTORES
     public Servicios(){
         
     }
-    public Servicios(Ruta ruta, Date fecha, String hora, Conductor conductor, TipoServicio tipoServicio, double valorPagar){
+    public Servicios(Ruta ruta, Date fecha, String hora, Conductor conductor, double valorPagar){
         this.ruta = ruta;
         this.fecha = fecha;
         this.hora = hora;
         this.conductor = conductor;
-        this.tipoServicio = tipoServicio;
         this.valorPagar = valorPagar;
+    }
+    @Override
+    public String toString(){
+        return "/***********************************************\nFecha: "+fecha+"\nHora: "+hora+"\n"+ruta;
     }
     
     //GETTERS Y SETTERS
@@ -43,10 +45,6 @@ public abstract class Servicios {
         return conductor;
     }
 
-    public TipoServicio getTipoServicio() {
-        return tipoServicio;
-    }
-
     public double getValorPagar() {
         return valorPagar;
     }
@@ -57,10 +55,6 @@ public abstract class Servicios {
 
     public void setConductor(Conductor conductor) {
         this.conductor = conductor;
-    }
-
-    public void setTipoServicio(TipoServicio tipoServicio) {
-        this.tipoServicio = tipoServicio;
     }
 
     public void setValorPagar(double valorPagar) {

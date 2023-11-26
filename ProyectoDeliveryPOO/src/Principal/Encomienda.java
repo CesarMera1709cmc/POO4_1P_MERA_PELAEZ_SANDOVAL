@@ -5,18 +5,32 @@
 package Principal;
 
 import Principal.enums.TipoEncomienda;
+import Principal.enums.TipoServicio;
+import java.util.Date;
 
 /**
  *
  * @author cesar
  */
-public class Encomienda {
+public class Encomienda extends Servicios {
     private int cantProductos;
     private TipoEncomienda tipoEncomienda;
     private double pesoKG;
+    protected String hora;
 
+    public Encomienda(Ruta ruta, String fecha, Conductor conductor, TipoServicio tipoServicio, double valorPagar,int cantProductos, TipoEncomienda tipoEncomienda, double pesoKG, String hora) {
+        super(ruta,fecha,conductor, tipoServicio,valorPagar);
+        this.cantProductos = cantProductos;
+        this.tipoEncomienda = tipoEncomienda;
+        this.pesoKG = pesoKG;
+        this.hora = hora;
+    }
+    
     public int getCantProductos() {
         return cantProductos;
+    }
+    public String toString(){
+        return super.toString()+"\nTipo encomienda"+tipoEncomienda+"\nCantidad"+cantProductos+"\nHora:"+hora;
     }
 
     public void setCantProductos(int cantProductos) {
