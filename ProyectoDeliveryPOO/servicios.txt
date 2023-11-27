@@ -3,3 +3,4 @@ numeroServicio,tipoEncomienda,cantidadProductos,peso,subtotal
 78660,T,0923547362,Juan Gómez,Sauces,Espol,12/01/3924,12:21
 93146,T,0923547362,Juan Gómez,Alborada,Urdesa,30/01/3924,23:59
 28836,T,0923547362,Juan Gómez,Sauces,Alborada,12/01/3924,12:12
+77504,E,0923547362,null null,asda,asdf,02/02/3923,3:1
