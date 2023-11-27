@@ -7,6 +7,7 @@ package Principal;
 import Principal.enums.TipoEstado;
 import Principal.enums.TipoVehiculo;
 import Principal.lecturaArchivos.ManejoArchivos;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -15,7 +16,7 @@ import java.util.Scanner;
  * @author frank
  */
 public class Sistema {
-    
+
     public static void main(String[] args) {
 
         Scanner scanner = new Scanner(System.in);
@@ -72,25 +73,27 @@ public class Sistema {
         return false;
 
     }
+
     //METODO CREAR VEHICULOS
-    public static ArrayList<Vehiculo> crearVehiculos() { 
-        
+    public static ArrayList<Vehiculo> crearVehiculos() {
+
         ArrayList<String> datosVehiculos = ManejoArchivos.LeeFichero("vehiculos.txt");
-        
-        ArrayList<Vehiculo> vehiculos = new ArrayList<>(); 
-        
-        for (String lineaVehiculos : datosVehiculos) { 
-            
-            String[] datos = lineaVehiculos.split(","); 
-            
+
+        ArrayList<Vehiculo> vehiculos = new ArrayList<>();
+
+        for (String lineaVehiculos : datosVehiculos) {
+
+            String[] datos = lineaVehiculos.split(",");
+
             Vehiculo vehiculo = new Vehiculo(datos[0], datos[1], datos[2], datos[3], datos[4]);
-            
-        vehiculos.add(vehiculo); 
-        
-        } 
-        
-        return vehiculos; 
+
+            vehiculos.add(vehiculo);
+
+        }
+
+        return vehiculos;
     }
+
     //METODO PARA CREAR USUARIOS DEL SISTEMA
     public static ArrayList<Usuario> crearUsuariosDelSistema() {
 
@@ -105,36 +108,34 @@ public class Sistema {
             if (partes[6].equals("C")) {
 
                 Cliente usuario = new Cliente(partes[0], partes[1], partes[2], partes[3], partes[4], partes[5]);
-                
+
                 usuariosSistema.add(usuario);
 
             } // PREGUNTA : EDAD CONDUCTOR? CEDULA CODUCTOR? LICENCIA?
 
             if (partes[6].equals("R")) {
-                
+
                 ArrayList<String> lineasConductores = ManejoArchivos.LeeFichero("conductores.txt");
                 String codigoVehiculo = "";
-                
+
                 Conductor usuario = new Conductor(partes[0], partes[1], partes[2], partes[3], partes[4], partes[5]);
-                
-                for (String linea: lineasConductores){
+
+                for (String linea : lineasConductores) {
                     String[] datosConductores = linea.split(",");
-                    if (partes[0].equals(datosConductores[0])){
+                    if (partes[0].equals(datosConductores[0])) {
                         usuario.setEstado(datosConductores[1]);
                         codigoVehiculo = datosConductores[2];
                     }
                 }
-                
-                
+
                 ArrayList<Vehiculo> vehiculos = crearVehiculos();
-                
-                for (Vehiculo vehiculo: vehiculos){
-                    if (vehiculo.getCodigoVehiculo().equals(codigoVehiculo)){
+
+                for (Vehiculo vehiculo : vehiculos) {
+                    if (vehiculo.getCodigoVehiculo().equals(codigoVehiculo)) {
                         usuario.setVehiculo(vehiculo);
                     }
                 }
-                
-                
+
                 usuariosSistema.add(usuario);
             }
 
@@ -159,14 +160,13 @@ public class Sistema {
                 }
             } else {
                 System.out.println("Por favor, ingrese un numero entero");
-                scanner.next(); 
+                scanner.next();
             }
         } while (!entradaValida);
 
         return edad;
     }
-    
-        
+
     public static Usuario identificarClienteConductor(String usuario, ArrayList<Usuario> listaUsuariosSistema) {
 
         Scanner scanner = new Scanner(System.in);
@@ -184,16 +184,16 @@ public class Sistema {
                 cliente.setEdad(edadCliente);
 
                 System.out.println("Ingresar el numero de su tarjeta de Credito/Debito: ");
-                scanner.nextLine(); 
+                scanner.nextLine();
                 String numeroTarjeta = scanner.nextLine();
                 cliente.setNumTarjetaCredito(numeroTarjeta);
 
                 System.out.println("GRACIAS POR COMPLETAR LOS DATOS FALTANTES.");
                 System.out.println("");
 
-                return cliente; 
+                return cliente;
 
-            }else if (usuarioSistema instanceof Conductor && usuarioSistema.getUser().equals(usuario)) {
+            } else if (usuarioSistema instanceof Conductor && usuarioSistema.getUser().equals(usuario)) {
 
                 Conductor conductor = (Conductor) usuarioSistema;
                 // DECIDIMOS PREGUNTAR POR LA EDAD AL CONDUCTOR, YA QUE EL ARCHIVO PDF NO ESPECIFICA. 
@@ -219,7 +219,7 @@ public class Sistema {
             menuConductor((Conductor) usuario); //DOWNCASTING
         }
     }
-   
+
     private static void menuCliente(Cliente cliente) {
         ArrayList<Servicios> servicios = new ArrayList<>();
         Scanner scanner = new Scanner(System.in);
@@ -241,9 +241,12 @@ public class Sistema {
                 case 1:
                     // METODO DE SOLICITAR SERVICIO
                     Servicios viajeTaxi = cliente.solicitarViajeTaxi();
-                    if (viajeTaxi!=null){
+                    if (viajeTaxi != null) {
                         servicios.add(viajeTaxi);
                     }
+
+                    guardarServicio(viajeTaxi, cliente);
+
                     break;
                 case 2:
                     // METODO DE SOLICITAR ENTREGA
@@ -281,11 +284,10 @@ public class Sistema {
             switch (opcion) {
                 case 1:
                     // METODO CONSULTAR SERVICIO CONDUCTOR
-                    
                     break;
                 case 2:
-                    // METODO DATOS DE VEHICULO
-                    System.out.println(conductor.getVehiculo()+"\n");;
+                    System.out.println(conductor.getVehiculo() + "\n");
+                    ;
                     break;
                 case 3:
                     System.out.println("Gracias por usar nuestrar aplicacion! G8");
@@ -297,6 +299,28 @@ public class Sistema {
 
         } while (true);
 
+    }
+
+    public static void guardarServicio(Servicios servicio, Cliente cliente) {
+        String tipoServicio = "";
+        if (servicio instanceof ViajeTaxi) {
+            tipoServicio = "T";
+        } else if (servicio instanceof Encomienda) {
+            tipoServicio = "E";
+        }
+
+        SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
+        
+        String linea = servicio.getNumeroServicio()+ ","
+                +tipoServicio + ","
+                + cliente.getNumCedula() + ","
+                + servicio.getConductor().getNombre() + " " + servicio.conductor.getApellido() + ","
+                + servicio.getRuta().getOrigen() + ","
+                + servicio.getRuta().getDestino() + ","
+                + formatoFecha.format(servicio.getFecha()) + "," 
+                + servicio.getHora();
+
+        ManejoArchivos.EscribirArchivo("servicios.txt", linea);
     }
 
 }

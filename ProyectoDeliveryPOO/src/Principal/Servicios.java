@@ -11,17 +11,19 @@ import java.util.Date;
  * @author cesar
  */
 public abstract class Servicios {
+    protected int numeroServicio;
     protected Ruta ruta;
     protected Date fecha;
     protected String hora;
     protected Conductor conductor;
     protected double valorPagar;
-    
+    private static int contadorServicios = 1000;
     //CONSTRUCTORES
     public Servicios(){
         
     }
     public Servicios(Ruta ruta, Date fecha, String hora, Conductor conductor, double valorPagar){
+        this.numeroServicio = contadorServicios++;
         this.ruta = ruta;
         this.fecha = fecha;
         this.hora = hora;
@@ -58,7 +60,21 @@ public abstract class Servicios {
     public void setValorPagar(double valorPagar) {
         this.valorPagar = valorPagar;
     }
-          
+
+    public Ruta getRuta() {
+        return ruta;
+    }
+
+    public String getHora() {
+        return hora;
+    }
+
+    public int getNumeroServicio() {
+        return numeroServicio;
+    }
+    
+    
+    
     
     
             
