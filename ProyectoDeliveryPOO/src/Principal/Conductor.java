@@ -5,6 +5,7 @@
 package Principal;
 
 import Principal.enums.TipoEstado;
+import java.util.ArrayList;
 
 /**
  *
@@ -19,7 +20,24 @@ public class Conductor extends Usuario {
     public Conductor() {
     }
 
-    
+    public void consultarServiciosAsignados(ArrayList<Servicios> serviciosconductor){
+    System.out.println("/*********************SERVICIOS ASIGNADOS******************/");
+    System.out.println("/                                                         */");
+    System.out.println("/**********************************************************/");
+    for (Servicios servicio : serviciosconductor) {
+        if(this.equals(servicio.conductor)){
+            if (servicio instanceof Encomienda) {
+            Encomienda encomienda = (Encomienda) servicio;
+            System.out.println( encomienda); 
+        } else if (servicio instanceof ViajeTaxi) {
+            ViajeTaxi viajeTaxi = (ViajeTaxi) servicio;
+            System.out.println(viajeTaxi);
+        } else {
+            System.out.println("Tipo de servicio desconocido");
+        }
+        }
+    }
+    }
     public Conductor(String numCedula, String nombre, String apellido, String user, String contrasena, String celular) {
         super(numCedula, nombre, apellido, user, contrasena, celular);
     }

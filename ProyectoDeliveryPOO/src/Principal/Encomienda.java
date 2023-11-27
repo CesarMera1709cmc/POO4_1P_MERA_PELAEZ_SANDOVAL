@@ -50,5 +50,13 @@ public class Encomienda extends Servicios {
     public void setPesoKG(double pesoKG) {
         this.pesoKG = pesoKG;
     }
+    public double calcularValorAPagar(){
+        return cantProductos+4;
+    }
+    public double calcularValorAPagar(String TC){
+        double valorAPagar = calcularValorAPagar();
+        valorAPagar += valorAPagar*0.15;
+        return valorAPagar;
+    }
     
 }
