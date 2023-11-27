@@ -57,8 +57,14 @@ public class Sistema {
         ejecutarMenu(usuarioSistema);
     }
 
-    // ESTE METODO SOLO VALIDA QUE EL USUARIO QUE ES INGRESADO  POR CONSOLA SEA
-    // VALIDO Y CORRECTO 
+/**
+ * 
+ * Este metodo valida el usuario y contraseña ingresado por el usuario de la consola
+ * @param usuario Usuario en formato String requerido para iniciar sesion
+ * @param contrasena Contraseña en formato String requerida para iniciar sesion 
+ * @return Retorna una valor booleano True se se inicio sesion correctamente
+ */   
+    
     public static boolean validarUsuarioSistema(String usuario, String contrasena) {
         ArrayList<String> usuarios = ManejoArchivos.LeeFichero("usuarios.txt");
 
@@ -75,7 +81,11 @@ public class Sistema {
 
     }
 
-    //METODO CREAR VEHICULOS
+    /**
+     * Este metodo crea un ArrayList de vehiculos a partir de un archivo de texto
+     * @return Retorna el ArrayList de vehiculos creado
+     */
+    
     public static ArrayList<Vehiculo> crearVehiculos() {
 
         ArrayList<String> datosVehiculos = ManejoArchivos.LeeFichero("vehiculos.txt");
@@ -90,10 +100,15 @@ public class Sistema {
 
             vehiculos.add(vehiculo);
 
-        } //NO ME DEJA
+        }
 
         return vehiculos;
     }
+    
+    /**
+     * Este metodo crea un ArrayList de tipo Usuario a partir de un archivo de texto con el formato de usuarios en especifico.
+     * @return Retorna el ArrayList de Usuarios creados
+     */
 
     //METODO PARA CREAR USUARIOS DEL SISTEMA
     public static ArrayList<Usuario> crearUsuariosDelSistema() {
@@ -112,7 +127,7 @@ public class Sistema {
 
                 usuariosSistema.add(usuario);
 
-            } // PREGUNTA : EDAD CONDUCTOR? CEDULA CODUCTOR? LICENCIA?
+            } // Redudancia en PDF : EDAD CONDUCTOR? CEDULA CODUCTOR? LICENCIA?
 
             if (partes[6].equals("R")) {
 
@@ -145,6 +160,10 @@ public class Sistema {
         return usuariosSistema;
     }
 
+    /**
+     * Este metodo solicita la edad al usuario de la consola, siempre y cuando sea un entero y se encuentre en un rango valido.
+     * @return Retorna el valor entero de la edad.
+     */
     public static int ingresarEdad() {
         Scanner scanner = new Scanner(System.in);
         int edad = 0;
@@ -167,6 +186,13 @@ public class Sistema {
 
         return edad;
     }
+    
+    /**
+     * Este metodo es utilizado para identificar el tipo de usuario que se ha ingresado por la consola (No valida)
+     * @param usuario String usuario ingresado por la consola previamente
+     * @param listaUsuariosSistema ArrayList de Usuarios previamente creados a partir del archivo de texto 
+     * @return Retorna un objeto de tipo Usuario el cual sera utilizado para correr la aplicacion.
+     */
 
     public static Usuario identificarClienteConductor(String usuario, ArrayList<Usuario> listaUsuariosSistema) {
 
@@ -185,7 +211,7 @@ public class Sistema {
                 cliente.setEdad(edadCliente);
 
                 System.out.println("Ingresar el numero de su tarjeta de Credito/Debito: ");
-                scanner.nextLine();
+       
                 String numeroTarjeta = scanner.nextLine();
                 cliente.setNumTarjetaCredito(numeroTarjeta);
 
@@ -210,7 +236,11 @@ public class Sistema {
         return null;
     }
 
-    //CONFIGURACION DE MENU PARA EL SISTEMA    
+    /**
+     * Este metodo ejecuta el Menu, la interfaz depende si el usuario ingresado como parametro es de tipo Cliente
+     * o conductor.
+     * @param usuario El parametro es una instancia de tipo Usuario, creada con los metodos previamente.
+     */
     public static void ejecutarMenu(Usuario usuario) {
 
         if (usuario instanceof Cliente) {
@@ -221,6 +251,10 @@ public class Sistema {
         }
     }
 
+    /**
+     * Este metodo abre la interfaz de el menu para el cliente
+     * @param cliente Recibe como parametro una instancia de Cliente
+     */
     private static void menuCliente(Cliente cliente) {
         ArrayList<Servicios> servicios = new ArrayList<>();
         Scanner scanner = new Scanner(System.in);
@@ -266,6 +300,12 @@ public class Sistema {
         } while (true);
     }
 
+    /**
+     * Este metodo abre la interfaz del menu para el Conductor
+     * @param conductor Recibe como parametro una instancia de Condcutor
+     * 
+     */
+    
     private static void menuConductor(Conductor conductor) {
 
         Scanner scanner = new Scanner(System.in);
@@ -288,7 +328,6 @@ public class Sistema {
 
                     break;
                 case 2:
-                    // METODO DATOS DE VEHICULO
                     System.out.println(conductor.getVehiculo() + "\n");
                     ;
                     break;
@@ -303,6 +342,12 @@ public class Sistema {
         } while (true);
 
     }
+    
+    /**
+     * Este metodo guarda los servicio creados por el cliente en un archivo de texto
+     * @param servicio Recibe como parametro el objeto de tipo Servicio creado
+     * @param cliente  Recibe como parametro el objeto de tipo Cliente, el cual crea el servicio
+     */
 
     public static void guardarServicio(Servicios servicio, Cliente cliente) {
         String tipoServicio = "";
@@ -326,6 +371,11 @@ public class Sistema {
         ManejoArchivos.EscribirArchivo("servicios.txt", linea);
     }
 
+    /**
+     * Este metodo genera un Identificador Unico para cada objeto que lo necesite (Ingresa al archivo de texto y ve que no se repita)
+     * @return Retorna un entero, el cual es el Identificador Unico.
+     */
+    
     //METODO PARA GENERAR NUMERO SERVICIO UNICO
     public static int generarNumeroServicioUnico() {
 

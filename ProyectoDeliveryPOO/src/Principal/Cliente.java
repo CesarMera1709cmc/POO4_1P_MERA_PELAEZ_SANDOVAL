@@ -35,7 +35,10 @@ public class Cliente extends Usuario {
         this.numTarjetaCredito = numTarjetaCredito;
     }
     
-    
+    /**
+     * Este metodo es utilizado por el cliente para Solicitar un servicio de tipo ViajeTaxi 
+     * @return Retorna un Objeto de tipo Servicio.
+     */
     //METODO SOLICITAR SERVICIO TAXI
     public Servicios solicitarViajeTaxi(){
         Scanner sc = new Scanner(System.in);
