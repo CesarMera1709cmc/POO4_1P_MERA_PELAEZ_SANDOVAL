@@ -250,10 +250,16 @@ public class Sistema {
                     }
                     break;
                 case 2:
-                    // METODO DE SOLICITAR ENTREGA
+                    Servicios Encomienda=cliente.solicitarEntregaEncomiendas();
+                    if (Encomienda != null) {
+                        servicios.add(Encomienda);
+                        Encomienda.setNumeroServicio(generarNumeroServicioUnico());
+                        
+                        guardarServicio(Encomienda, cliente);
+                    }
                     break;
                 case 3:
-                    // METODO DE CONSULTAR SERVICIOS
+                    cliente.consultarServicios(servicios);
                     break;
                 case 4:
                     System.out.println("Gracias por usar nuestrar aplicacion! G8");
