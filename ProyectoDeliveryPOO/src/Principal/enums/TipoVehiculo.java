@@ -9,5 +9,5 @@ package Principal.enums;
  * @author Pc
  */
 public enum TipoVehiculo {
-    A, M, tipo
+    A, M
 }

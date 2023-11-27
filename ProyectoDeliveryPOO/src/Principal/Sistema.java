@@ -9,6 +9,7 @@ import Principal.enums.TipoVehiculo;
 import Principal.lecturaArchivos.ManejoArchivos;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.Scanner;
 
 /**
@@ -78,13 +79,15 @@ public class Sistema {
     public static ArrayList<Vehiculo> crearVehiculos() {
 
         ArrayList<String> datosVehiculos = ManejoArchivos.LeeFichero("vehiculos.txt");
-
-        ArrayList<Vehiculo> vehiculos = new ArrayList<>();
-
-        for (String lineaVehiculos : datosVehiculos) {
-
-            String[] datos = lineaVehiculos.split(",");
-
+        
+        datosVehiculos.remove(0);
+        
+        ArrayList<Vehiculo> vehiculos = new ArrayList<>(); 
+        
+        for (String lineaVehiculos : datosVehiculos) { 
+            
+            String[] datos = lineaVehiculos.split(","); 
+            
             Vehiculo vehiculo = new Vehiculo(datos[0], datos[1], datos[2], datos[3], datos[4]);
 
             vehiculos.add(vehiculo);
@@ -98,7 +101,9 @@ public class Sistema {
     public static ArrayList<Usuario> crearUsuariosDelSistema() {
 
         ArrayList<String> usuarios = ManejoArchivos.LeeFichero("usuarios.txt");
-
+        
+        usuarios.remove(0);
+        
         ArrayList<Usuario> usuariosSistema = new ArrayList();
 
         for (String lineaUsuarios : usuarios) {
@@ -116,6 +121,9 @@ public class Sistema {
             if (partes[6].equals("R")) {
 
                 ArrayList<String> lineasConductores = ManejoArchivos.LeeFichero("conductores.txt");
+                
+                lineasConductores.remove(0);
+                
                 String codigoVehiculo = "";
 
                 Conductor usuario = new Conductor(partes[0], partes[1], partes[2], partes[3], partes[4], partes[5]);
@@ -241,11 +249,18 @@ public class Sistema {
                 case 1:
                     // METODO DE SOLICITAR SERVICIO
                     Servicios viajeTaxi = cliente.solicitarViajeTaxi();
+                    
                     if (viajeTaxi != null) {
+             
+                        int numeroServicio = generarNumeroServicioUnico();
+                        
+                        viajeTaxi.setNumeroServicio(numeroServicio);
+                        
                         servicios.add(viajeTaxi);
+                        
+                        guardarServicio(viajeTaxi, cliente);
+                        
                     }
-
-                    guardarServicio(viajeTaxi, cliente);
 
                     break;
                 case 2:
@@ -322,5 +337,36 @@ public class Sistema {
 
         ManejoArchivos.EscribirArchivo("servicios.txt", linea);
     }
+    
+    //METODO PARA GENERAR NUMERO SERVICIO UNICO
+    public static int generarNumeroServicioUnico(){
+        
+        ArrayList<String> datosServicios = ManejoArchivos.LeeFichero("servicios.txt");
+        
+        ArrayList<Integer> numeros = new ArrayList<>();
+        
+        datosServicios.remove(0);
+        
+        for (String lineaServicios: datosServicios){
 
+            String[] datos = lineaServicios.split(",");
+
+            numeros.add(Integer.valueOf(datos[0])); 
+            
+        }
+        
+        boolean validez = true;
+        
+        do{
+            Random rd = new Random();
+            int numServicio = rd.nextInt(89999)+10000;
+            
+            if (!numeros.contains(numServicio)){
+                validez = false;
+                return numServicio;
+            }
+        }while(validez);
+        
+        return 0;
+    }
 }

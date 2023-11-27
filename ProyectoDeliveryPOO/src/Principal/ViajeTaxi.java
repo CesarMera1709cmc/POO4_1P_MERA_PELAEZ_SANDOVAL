@@ -4,6 +4,7 @@
  */
 package Principal;
 import java.util.Date;
+import java.util.Random;
 
 /**
  *
@@ -15,8 +16,8 @@ public class ViajeTaxi extends Servicios {
     public ViajeTaxi(){
         
     }
-    public ViajeTaxi(Ruta ruta, Date fecha, String hora, Conductor conductor, double valorPagar, int numPersonas){
-        super(ruta, fecha, hora, conductor, valorPagar);
+    public ViajeTaxi(Ruta ruta, Date fecha, String hora, Conductor conductor, int numPersonas){
+        super(ruta, fecha, hora, conductor);
         this.numPersonas = numPersonas;
     }
     //GETTERS Y SETTERS
@@ -27,5 +28,16 @@ public class ViajeTaxi extends Servicios {
     public void setNumPersonas(int numPersonas) {
         this.numPersonas = numPersonas;
     }
-    
+    //METODOS
+    @Override
+    public double calcularValorAPagar(){
+        Random rd = new Random();
+        int kms = rd.nextInt(41)+5;
+        return kms*0.5;
+    }
+    public double calcularValorAPagar(String TC){
+        double valorAPagar = calcularValorAPagar();
+        valorAPagar += valorAPagar*0.15;
+        return valorAPagar;
+    }
 }

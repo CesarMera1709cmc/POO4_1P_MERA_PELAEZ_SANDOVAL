@@ -52,4 +52,10 @@ public class Conductor extends Usuario {
         this.estado = TipoEstado.valueOf(estado);
     }
     
+    
+    //TO STRING
+    @Override
+    public String toString(){
+        return nombre+" "+apellido;
+    }
 }
