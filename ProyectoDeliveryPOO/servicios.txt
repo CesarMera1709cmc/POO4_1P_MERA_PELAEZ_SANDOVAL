@@ -1,0 +1,5 @@
+numeroServicio,tipoEncomienda,cantidadProductos,peso,subtotal
+10160,T,0923547362,Juan Gómez,Sacues,Espol,12/01/3924,0:23
+78660,T,0923547362,Juan Gómez,Sauces,Espol,12/01/3924,12:21
+93146,T,0923547362,Juan Gómez,Alborada,Urdesa,30/01/3924,23:59
+28836,T,0923547362,Juan Gómez,Sauces,Alborada,12/01/3924,12:12
