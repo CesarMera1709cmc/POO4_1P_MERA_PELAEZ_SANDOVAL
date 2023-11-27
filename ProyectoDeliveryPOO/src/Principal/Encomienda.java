@@ -17,8 +17,8 @@ public class Encomienda extends Servicios {
     private double pesoKG;
     protected String hora;
 
-    public Encomienda(Ruta ruta, Date fecha, Conductor conductor,int cantProductos, TipoEncomienda tipoEncomienda, double pesoKG, String hora) {
-        super(ruta,fecha,hora,conductor);
+    public Encomienda(Ruta ruta, Date fecha, Conductor conductor, double valorPagar,int cantProductos, TipoEncomienda tipoEncomienda, double pesoKG, String hora) {
+        super(ruta,fecha,hora,conductor,valorPagar);
         this.cantProductos = cantProductos;
         this.tipoEncomienda = tipoEncomienda;
         this.pesoKG = pesoKG;
@@ -50,9 +50,5 @@ public class Encomienda extends Servicios {
     public void setPesoKG(double pesoKG) {
         this.pesoKG = pesoKG;
     }
-    //METODOS
-    @Override
-    public double calcularValorAPagar(){
-        return 0.0;
-    }
+    
 }

@@ -11,29 +11,28 @@ import java.util.Date;
  * @author cesar
  */
 public abstract class Servicios {
-    protected int numeroServicio;
     protected Ruta ruta;
     protected Date fecha;
     protected String hora;
     protected Conductor conductor;
     protected double valorPagar;
+    
     //CONSTRUCTORES
     public Servicios(){
         
     }
-
-    public Servicios(Ruta ruta, Date fecha, String hora, Conductor conductor){
+    public Servicios(Ruta ruta, Date fecha, String hora, Conductor conductor, double valorPagar){
         this.ruta = ruta;
         this.fecha = fecha;
         this.hora = hora;
         this.conductor = conductor;
+        this.valorPagar = valorPagar;
     }
-    //METODOS
     @Override
     public String toString(){
         return "/***********************************************\nFecha: "+fecha+"\nHora: "+hora+"\n"+ruta;
     }
-    public abstract double calcularValorAPagar();
+    
     //GETTERS Y SETTERS
     
     public Date getFecha() {
@@ -59,31 +58,8 @@ public abstract class Servicios {
     public void setValorPagar(double valorPagar) {
         this.valorPagar = valorPagar;
     }
-
-    public int getNumeroServicio() {
-        return numeroServicio;
-    }
-
-    public void setNumeroServicio(int numeroServicio) {
-        this.numeroServicio = numeroServicio;
-    }
-
-    public Ruta getRuta() {
-        return ruta;
-    }
-
-    public void setRuta(Ruta ruta) {
-        this.ruta = ruta;
-    }
-
-    public String getHora() {
-        return hora;
-    }
+          
     
-    public void setHora(String hora) {
-        this.hora = hora;
-    }
-              
     
             
 }

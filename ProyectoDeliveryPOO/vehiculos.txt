@@ -1,9 +1,4 @@
 codigoVehículo,placa,modelo,marca,tipo
 23,GSX3847,CX3,Mazda,A
+12,GSD8475,Aveo,Chevrolet,A
 15,GAF9833,I10,Hyundai,A
-18,HJK5678,Yaris,Toyota,A
-25,XYZ1234,Sonata,Hyundai,A
-30,MHJ5678,CG125,Honda,M
-31,KLM4321,Pulsar,Bajaj,M
-32,QWE8765,YBR125,Yamaha,M
-

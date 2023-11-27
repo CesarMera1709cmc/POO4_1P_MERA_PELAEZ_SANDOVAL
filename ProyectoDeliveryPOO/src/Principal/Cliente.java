@@ -1,9 +1,11 @@
 package Principal;
 
 import Principal.enums.TipoEstado;
+import Principal.enums.TipoFormaPago;
 import Principal.enums.TipoVehiculo;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Random;
 import java.util.Scanner;
 
 /*
@@ -66,7 +68,7 @@ public class Cliente extends Usuario {
         }while(!entradaValida);
         entradaValida = false;
         do{
-            System.out.print("Ingrese el mes (1-12): ");
+            System.out.print("Ingrese el mes: ");
             if (sc.hasNextInt()){
                 mes = sc.nextInt();
                 if (mes>=1 && mes<=12){
@@ -81,7 +83,7 @@ public class Cliente extends Usuario {
         }while(!entradaValida);
         entradaValida = false;
         do{
-            System.out.print("Ingrese el dia (1-31): ");
+            System.out.print("Ingrese el dia: ");
             if (sc.hasNextInt()){
                 dia = sc.nextInt();
                 if (dia>=1 && dia<=31){
@@ -99,7 +101,7 @@ public class Cliente extends Usuario {
         int minutos = 0;
         entradaValida = false;
         do{
-            System.out.print("Ingrese la hora (0-23): ");
+            System.out.print("Ingrese la hora (0-23):");
             if (sc.hasNextInt()){
                 hora = sc.nextInt();
                 if (hora>=0 && hora<=23){
@@ -114,7 +116,7 @@ public class Cliente extends Usuario {
         }while(!entradaValida);
         entradaValida = false;
         do{
-            System.out.print("Ingrese los minutos (0-59): ");
+            System.out.print("Ingrese los minutos (0-59):");
             if (sc.hasNextInt()){
                 minutos = sc.nextInt();
                 if (minutos>=0 && minutos<=59){
@@ -132,34 +134,31 @@ public class Cliente extends Usuario {
         //INGRESO METODO DE PAGO
         System.out.println("\nINGRESE LA FORMA DE PAGO");
         String opcion;
+        TipoFormaPago formaPago = TipoFormaPago.E;
         do{
             System.out.print("Desea pagar con Tarjeta de Credito? (S/N): ");
             opcion = sc.nextLine();
             if (opcion.equalsIgnoreCase("S")){
                 System.out.println("Eligio TARJETA DE CREDITO como metodo de pago");
+                formaPago = TipoFormaPago.TC;
             }else if(opcion.equalsIgnoreCase("N")){
                 System.out.println("Se selecciono EFECTIVO como metodo de pago");
+                formaPago = TipoFormaPago.E;
             }else{
                 System.out.println("La opcion ingresada no es correcta");
             }
         }while(!opcion.equalsIgnoreCase("S")&&!opcion.equalsIgnoreCase("N"));
         //INGRESO NUMERO DE VIAJEROS
-        
         System.out.println("\nINGRESE LA CANTIDAD DE VIAJEROS");
-        entradaValida = false;
-        int cantidadViajeros = 0;
-        do{
-            System.out.print("Cantidad de viajeros: ");
-            if (sc.hasNextInt()){
-                cantidadViajeros = sc.nextInt();
-                sc.nextLine();
-                entradaValida = true;
-            }else{
-                System.out.println("Por favor, ingrese un numero entero");
-                sc.next();
-            }
-        }while(!entradaValida);
-        
+        int cantidadViajeros = sc.nextInt();
+        sc.nextLine();
+        //CALCULO DEL VALOR A PAGAR
+        Random rd = new Random();
+        int kms = rd.nextInt(41)+5;
+        double valorAPagar = kms*0.5;
+        if (formaPago == TipoFormaPago.TC){
+            valorAPagar += valorAPagar*0.15;
+        }
         //SELECCIÓN DE CONDUCTOR DISPONIBLE
         Conductor conductor = new Conductor();
         ArrayList<Usuario> usuariosSistema = Sistema.crearUsuariosDelSistema();
@@ -180,15 +179,13 @@ public class Cliente extends Usuario {
             if (opcion2.equalsIgnoreCase("S")){
                 System.out.println("Servicio confirmado");
                 conductor.setEstado("O");
-                ViajeTaxi servicioTaxi = new ViajeTaxi(ruta,fecha,horaMinutos,conductor,cantidadViajeros);
-                double valorAPagar = servicioTaxi.calcularValorAPagar(this.getNumTarjetaCredito());
-                servicioTaxi.setValorPagar(valorAPagar);
+                Servicios servicioTaxi = new ViajeTaxi(ruta,fecha,horaMinutos,conductor,valorAPagar,cantidadViajeros);
                 return servicioTaxi;
             }else if(opcion2.equalsIgnoreCase("N")){
                 System.out.println("SERVICIO CANCELADO");
                 return null;
             }else{
-                System.out.println("La opcion ingresada no es correcta");
+                System.out.println("La opción ingresada no es correcta");
             }
         }while(!opcion2.equalsIgnoreCase("S")&&!opcion2.equalsIgnoreCase("N"));
         return null;
