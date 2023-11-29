@@ -5,7 +5,10 @@
 package Principal;
 
 import Principal.enums.TipoFormaPago;
+import Principal.lecturaArchivos.ManejoArchivos;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.Random;
 
 /**
  *
@@ -18,6 +21,7 @@ public class Pago {
     private double valorAPagar;
     private TipoFormaPago tipoFormaPago;
     private Cliente cliente;
+    
     //GETTERS Y SETTERS
     public int getIdPago(){
         return this.idPago;
@@ -52,4 +56,40 @@ public class Pago {
     public void setCliente(Cliente cliente){
         this.cliente = cliente;
     }
+    
+    //METODOS
+    
+    public static int generarNumeroPagoUnico(){
+        
+        ArrayList<String> datosServicios = ManejoArchivos.LeeFichero("pagos.txt");
+
+        ArrayList<Integer> numeros = new ArrayList<>();
+
+        datosServicios.remove(0);
+        
+        if (!numeros.isEmpty()){
+            
+            for (String lineaServicios : datosServicios) {
+
+                String[] datos = lineaServicios.split(",");
+
+                numeros.add(Integer.valueOf(datos[0]));
+            }
+            
+        }
+        boolean validez = true;
+
+        do {
+            Random rd = new Random();
+            int numServicio = rd.nextInt(899) + 100;
+
+            if (!numeros.contains(numServicio)) {
+                validez = false;
+                return numServicio;
+            }
+        } while (validez);
+
+        return 0;
+    }
+    
 }

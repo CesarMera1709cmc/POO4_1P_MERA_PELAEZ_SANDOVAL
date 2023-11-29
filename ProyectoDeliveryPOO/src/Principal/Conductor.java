@@ -14,17 +14,16 @@ import java.util.ArrayList;
 public class Conductor extends Usuario {
 
     private Vehiculo vehiculo;
-    private int edad;
     private TipoEstado estado;
 
     public Conductor() {
     }
 
-    public void consultarServiciosAsignados(ArrayList<Servicios> serviciosconductor){
+    public void consultarServiciosAsignados(ArrayList<Servicio> serviciosconductor){
     System.out.println("/*********************SERVICIOS ASIGNADOS******************/");
     System.out.println("/                                                         */");
     System.out.println("/**********************************************************/");
-    for (Servicios servicio : serviciosconductor) {
+    for (Servicio servicio : serviciosconductor) {
         if(this.equals(servicio.conductor)){
             if (servicio instanceof Encomienda) {
             Encomienda encomienda = (Encomienda) servicio;
@@ -52,14 +51,6 @@ public class Conductor extends Usuario {
 
     public void setVehiculo(Vehiculo vehiculo) {
         this.vehiculo = vehiculo;
-    }
-
-    public int getEdad() {
-        return edad;
-    }
-
-    public void setEdad(int edad) {
-        this.edad = edad;
     }
 
     public TipoEstado getEstado() {

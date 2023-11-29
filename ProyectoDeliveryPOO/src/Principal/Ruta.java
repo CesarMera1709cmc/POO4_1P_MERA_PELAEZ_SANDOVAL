@@ -19,6 +19,7 @@ public class Ruta {
         this.origen = origen;
         this.destino = destino;
     }
+    
     //GETTERS Y SETTERS
     public String getOrigen(){
         return this.origen;
@@ -32,8 +33,9 @@ public class Ruta {
     public void setDestino(String destino){
         this.destino = destino;
     }
+    //METODOS
     @Override
     public String toString(){
-        return "Desde: "+origen+"\nHasta: "+destino;
+        return "\nDesde: "+origen+"\nHasta: "+destino;
     }
 }

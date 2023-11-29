@@ -1,0 +1,1 @@
+idPago,FechaPago,numeroServicio,formaPago,cedulaCliente,subtotal,valorPagar

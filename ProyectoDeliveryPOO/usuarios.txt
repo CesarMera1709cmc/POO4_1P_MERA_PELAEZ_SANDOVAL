@@ -1,4 +1,14 @@
 cedula,nombre,apellido,user,contraseña,celular,tipoUsuario
 0923547362,Luis,Mancero,lmancero,qwerty,0983637223,C
-0986353323,Juan,Gómez,jgome,38373,093727266,R
-0945698598,Marco,Cárdenas,mcarden,abcde,0975342533,C
+0986353323,Juan,Gómez,jgomez,38373,093727266,R
+0945698598,Marco,Cárdenas,mcardenas,abcde,0975342533,C
+0762637343,Ana,Martínez,amartinez,securepass,0958473621,C
+1205454451,Sofía,Rivera,srivera,riverapass,0998123456,R
+0876543210,Carlos,Sánchez,csanchez,sanchezpass,0967543210,C
+0998765432,Maria,Rodriguez,mrodriguez,rodpass,0945678901,R
+0812345678,Diego,Flores,dflores,florespass,0987123456,C
+0654321098,Elena,Gutierrez,egutierrez,gutpass,0978123456,R
+0934682751,Pablo,Velasco,pvelasco,velascopass,0956123784,C
+0987654321,Jorge,Santos,jsantos,jsantospass,0987654321,R
+0932165478,Ana,López,alopez,alopezwpass,0932165478,R
+0876543210,Mario,García,mgarcia,mgarciapass,0876543210,R

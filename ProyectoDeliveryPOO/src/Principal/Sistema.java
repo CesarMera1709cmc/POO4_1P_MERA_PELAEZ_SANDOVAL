@@ -17,9 +17,30 @@ import java.util.Scanner;
  * @author frank
  */
 public class Sistema {
-
+    
+    public static ArrayList<Conductor> conductores = new ArrayList();
+    
+    //CREACION DE CONDUCTORES
+    
+    public static ArrayList<Conductor> crearConductores(){
+        
+        ArrayList<Conductor> listaConductores = new ArrayList();
+        
+        ArrayList<Usuario> usuariosSistema = crearUsuariosDelSistema();
+        
+        for (Usuario usuario: usuariosSistema){
+            if (usuario instanceof Conductor){
+                Conductor conductorDC = (Conductor)usuario;
+                conductores.add(conductorDC);
+            }
+        }
+        return listaConductores;
+    }
+    
     public static void main(String[] args) {
 
+        conductores = crearConductores();
+        
         Scanner scanner = new Scanner(System.in);
 
         System.out.println(" ++++++++++++++++++++++++++++++++++++");
@@ -256,7 +277,7 @@ public class Sistema {
      * @param cliente Recibe como parametro una instancia de Cliente
      */
     private static void menuCliente(Cliente cliente) {
-        ArrayList<Servicios> servicios = new ArrayList<>();
+
         Scanner scanner = new Scanner(System.in);
 
         do {
@@ -274,31 +295,48 @@ public class Sistema {
 
             switch (opcion) {
                 case 1:
-                    // METODO DE SOLICITAR SERVICIO
-                    Servicios viajeTaxi = cliente.solicitarViajeTaxi();
+                    // METODO DE SOLICITAR SERVICIO TAXI
+                    Servicio viajeTaxi = cliente.solicitarViajeTaxi();
+                    
                     if (viajeTaxi != null) {
+                        
+                        ArrayList<Servicio> servicios = cliente.getServicios();
+                        
                         servicios.add(viajeTaxi);
-                        viajeTaxi.setNumeroServicio(generarNumeroServicioUnico());
+                        
+                        cliente.setServicios(servicios);
                         
                         guardarServicio(viajeTaxi, cliente);
-                    }
-                    break;
-                case 2:
-                    Servicios Encomienda=cliente.solicitarEntregaEncomiendas();
-                    if (Encomienda != null) {
-                        servicios.add(Encomienda);
-                        Encomienda.setNumeroServicio(generarNumeroServicioUnico());
                         
-                        guardarServicio(Encomienda, cliente);
                     }
                     break;
-                case 3:
-                    cliente.consultarServicios(servicios);
+                    
+                case 2:
+                    // METODO DE SOLICITAR SERVICIO ENCOMIENDA
+                    Servicio encomienda = cliente.solicitarEntregaEncomiendas();
+                    
+                    if (encomienda != null) {
+                        
+                        ArrayList<Servicio> servicios = cliente.getServicios();
+                        
+                        servicios.add(encomienda);
+                        
+                        cliente.setServicios(servicios);
+                        
+                        guardarServicio(encomienda, cliente);
+                        
+                    }
                     break;
+                    
+                case 3:
+                    cliente.consultarServicios();
+                    break;
+                    
                 case 4:
                     System.out.println("Gracias por usar nuestrar aplicacion! G8");
                     System.exit(0);
                     break;
+                    
                 default:
                     System.out.println("La opcion ingresada no es valida");
             }
@@ -355,7 +393,7 @@ public class Sistema {
      * @param cliente  Recibe como parametro el objeto de tipo Cliente, el cual crea el servicio
      */
 
-    public static void guardarServicio(Servicios servicio, Cliente cliente) {
+    public static void guardarServicio(Servicio servicio, Cliente cliente) {
         String tipoServicio = "";
         if (servicio instanceof ViajeTaxi) {
             tipoServicio = "T";
@@ -375,43 +413,6 @@ public class Sistema {
                 + servicio.getHora();
 
         ManejoArchivos.EscribirArchivo("servicios.txt", linea);
-    }
-
-    /**
-     * Este metodo genera un Identificador Unico para cada objeto que lo necesite (Ingresa al archivo de texto y ve que no se repita)
-     * @return Retorna un entero, el cual es el Identificador Unico.
-     */
-    
-    //METODO PARA GENERAR NUMERO SERVICIO UNICO
-    public static int generarNumeroServicioUnico() {
-
-        ArrayList<String> datosServicios = ManejoArchivos.LeeFichero("servicios.txt");
-
-        ArrayList<Integer> numeros = new ArrayList<>();
-
-        datosServicios.remove(0);
-
-        for (String lineaServicios : datosServicios) {
-
-            String[] datos = lineaServicios.split(",");
-
-            numeros.add(Integer.valueOf(datos[0]));
-
-        }
-
-        boolean validez = true;
-
-        do {
-            Random rd = new Random();
-            int numServicio = rd.nextInt(89999) + 10000;
-
-            if (!numeros.contains(numServicio)) {
-                validez = false;
-                return numServicio;
-            }
-        } while (validez);
-
-        return 0;
     }
 
 }

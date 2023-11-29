@@ -4,12 +4,14 @@
  */
 package Principal;
 
+import java.util.ArrayList;
+
 
 /**
  *
  * @author frank
  */
-public class Usuario {
+public abstract class Usuario {
     
     protected String numCedula;
     protected String nombre;
@@ -18,6 +20,7 @@ public class Usuario {
     protected String contrasena;
     protected String celular;
     protected int edad;
+    protected ArrayList<Servicio> servicios = new ArrayList();
     
     public Usuario() {
     }
@@ -89,9 +92,22 @@ public class Usuario {
     public void setEdad(int edad) {
         this.edad = edad;
     }
+
+    public ArrayList<Servicio> getServicios() {
+        return servicios;
+    }
+
+    public void setServicios(ArrayList<Servicio> servicios) {
+        this.servicios = servicios;
+    }
     
+    //METODOS
     
-    
+    public void consultarServicios(){
+        for (Servicio servicio : this.getServicios()) {
+            System.out.println(servicio);
+        }
+    }
     /*
     @Override
     public String toString() {
@@ -100,6 +116,8 @@ public class Usuario {
 
     }
     */
+
+
 
    
 }

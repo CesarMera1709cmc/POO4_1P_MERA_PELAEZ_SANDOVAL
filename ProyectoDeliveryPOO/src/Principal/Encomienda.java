@@ -11,26 +11,30 @@ import java.util.Date;
  *
  * @author cesar
  */
-public class Encomienda extends Servicios {
+public class Encomienda extends Servicio {
     private int cantProductos;
     private TipoEncomienda tipoEncomienda;
     private double pesoKG;
     protected String hora;
 
-    public Encomienda(Ruta ruta, Date fecha, Conductor conductor, double valorPagar,int cantProductos, TipoEncomienda tipoEncomienda, double pesoKG, String hora) {
-        super(ruta,fecha,hora,conductor,valorPagar);
+    
+    //CONSTRUCTORES
+    public Encomienda(){
+        
+    }
+    
+    public Encomienda(Ruta ruta, Date fecha, Conductor conductor,int cantProductos, TipoEncomienda tipoEncomienda, double pesoKG, String hora) {
+        super(ruta,fecha,hora,conductor);
         this.cantProductos = cantProductos;
         this.tipoEncomienda = tipoEncomienda;
         this.pesoKG = pesoKG;
     }
     
+    //GETTERS Y SETTERS
     public int getCantProductos() {
         return cantProductos;
     }
-    public String toString(){
-        return super.toString()+"\nTipo encomienda"+tipoEncomienda+"\nCantidad"+cantProductos+"\nHora:"+hora;
-    }
-
+    
     public void setCantProductos(int cantProductos) {
         this.cantProductos = cantProductos;
     }
@@ -50,13 +54,34 @@ public class Encomienda extends Servicios {
     public void setPesoKG(double pesoKG) {
         this.pesoKG = pesoKG;
     }
-    public double calcularValorAPagar(){
-        return cantProductos+4;
+    
+    //METODOS
+    @Override
+    public String toString(){
+        return """
+               /************************************************************/
+               Tipo: Viaje
+               Tipo Encomienda: """ + tipoEncomienda
+                + "\nCantidad: " + cantProductos
+                + super.toString();
     }
-    public double calcularValorAPagar(String TC){
-        double valorAPagar = calcularValorAPagar();
-        valorAPagar += valorAPagar*0.15;
-        return valorAPagar;
+    
+    
+    //METODO CALCULAR VALOR A PAGAR
+    @Override
+    public double[] calcularValorAPagar(){
+        double subtotal = this.cantProductos + 4;
+        double total = subtotal;
+        double[] valoresAPagar = {subtotal, total};
+        System.out.println("Subotal a pagar por el servicio: "+subtotal);
+        return valoresAPagar;
+    }
+    public double[] calcularValorAPagar(String TC){
+        double[] valores = calcularValorAPagar();
+        double subtotal = valores[0];
+        double total = valores[1] + subtotal*0.1;
+        double[] valoresAPagar = {subtotal, total};
+        return valoresAPagar;
     }
     
 }
