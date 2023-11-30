@@ -11,14 +11,14 @@ import Principal.enums.TipoVehiculo;
  * @author frank
  */
 public class Vehiculo {
-    private String codigoVehiculo;
+    private int codigoVehiculo;
     private String placa;
     private String modelo;
     private String marca;
     private TipoVehiculo tipoVehiculo;
 
     public Vehiculo(String codigoVehiculo, String placa, String modelo, String marca, String tipoVehiculo) {
-        this.codigoVehiculo = codigoVehiculo;
+        this.codigoVehiculo = Integer.parseInt(codigoVehiculo);
         this.placa = placa;
         this.modelo = modelo;
         this.marca = marca;
@@ -26,7 +26,7 @@ public class Vehiculo {
     }
     
     //GETTERS Y SETTERS
-    public String getCodigoVehiculo(){
+    public int getCodigoVehiculo(){
         return this.codigoVehiculo;
     }
     public String getPlaca(){
@@ -42,7 +42,7 @@ public class Vehiculo {
         return this.tipoVehiculo;
     }
     public void setCodigoVehiculo(String codigoVehiculo){
-        this.codigoVehiculo = codigoVehiculo;
+        this.codigoVehiculo = Integer.parseInt(codigoVehiculo);
     }
     public void setPlaca(String placa){
         this.placa = placa;

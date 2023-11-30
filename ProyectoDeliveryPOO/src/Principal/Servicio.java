@@ -4,6 +4,7 @@
  */
 package Principal;
 
+import Principal.enums.TipoFormaPago;
 import Principal.lecturaArchivos.ManejoArchivos;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -23,8 +24,10 @@ public abstract class Servicio {
     protected String hora;
     protected Conductor conductor;
     protected double valorPagar;
+    protected TipoFormaPago tipoFormaPago;
+    protected String cedulaCliente;
 
-    //CONSTRUCTORES
+    //CONSTRUCTOR
     public Servicio() {
         Scanner sc = new Scanner(System.in);
         
@@ -61,7 +64,7 @@ public abstract class Servicio {
         entradaValida = false;
         
         do{
-            System.out.print("Ingrese el mes: ");
+            System.out.print("Ingrese el mes (1-12): ");
             if (sc.hasNextInt()){
                 mes = sc.nextInt();
                 if (mes>=1 && mes<=12){
@@ -77,7 +80,7 @@ public abstract class Servicio {
         entradaValida = false;
         
         do{
-            System.out.print("Ingrese el dia: ");
+            System.out.print("Ingrese el dia (1-31): ");
             if (sc.hasNextInt()){
                 dia = sc.nextInt();
                 if (dia>=1 && dia<=31){
@@ -134,14 +137,15 @@ public abstract class Servicio {
         fecha = fechaIngresada;
         hora = horaMinutos;
     }
-
-    public Servicio(Ruta ruta, Date fecha, String hora, Conductor conductor) {
+ 
+    public Servicio(int numeroServicio, String cedulaCliente, Conductor conductor, Ruta ruta, Date fecha, String hora){
+        this.numeroServicio = numeroServicio;
+        this.cedulaCliente = cedulaCliente;
+        this.conductor = conductor;
         this.ruta = ruta;
         this.fecha = fecha;
         this.hora = hora;
-        this.conductor = conductor;
     }
-
     
     //GETTERS Y SETTERS
     public Date getFecha() {
@@ -191,6 +195,22 @@ public abstract class Servicio {
     public void setHora(String hora) {
         this.hora = hora;
     }
+
+    public TipoFormaPago getTipoFormaPago() {
+        return tipoFormaPago;
+    }
+
+    public void setTipoFormaPago(TipoFormaPago tipoFormaPago) {
+        this.tipoFormaPago = tipoFormaPago;
+    }
+
+    public String getCedulaCliente() {
+        return cedulaCliente;
+    }
+
+    public void setCedulaCliente(String cedulaCliente) {
+        this.cedulaCliente = cedulaCliente;
+    }
     
     
 
@@ -202,6 +222,8 @@ public abstract class Servicio {
         return "\nFecha: " + formatoFecha.format(fecha) + "\nHora: " + hora + ruta;
     }
     
+    
+    //METODO ABSTRACTO PARA CALCULAR VALOR A PAGAR
     public abstract double[] calcularValorAPagar();
     
     /**
@@ -233,8 +255,10 @@ public abstract class Servicio {
             int numServicio = rd.nextInt(89999) + 10000;
 
             if (!numeros.contains(numServicio)) {
+                
                 validez = false;
                 return numServicio;
+                
             }
         } while (validez);
 

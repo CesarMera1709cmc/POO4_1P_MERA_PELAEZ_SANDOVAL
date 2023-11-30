@@ -8,8 +8,10 @@ import Principal.enums.TipoEstado;
 import Principal.enums.TipoVehiculo;
 import Principal.lecturaArchivos.ManejoArchivos;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Random;
+import java.util.Date;
 import java.util.Scanner;
 
 /**
@@ -17,29 +19,127 @@ import java.util.Scanner;
  * @author frank
  */
 public class Sistema {
+    public static ArrayList<Usuario> usuarios = new ArrayList<>();
+    public static ArrayList<Servicio> servicios = new ArrayList<>();
     
-    public static ArrayList<Conductor> conductores = new ArrayList();
+    //CREACION DE USUARIOS
     
-    //CREACION DE CONDUCTORES
-    
-    public static ArrayList<Conductor> crearConductores(){
-        
-        ArrayList<Conductor> listaConductores = new ArrayList();
+    public static void crearUsuarios(){
         
         ArrayList<Usuario> usuariosSistema = crearUsuariosDelSistema();
         
         for (Usuario usuario: usuariosSistema){
+            
+            usuarios.add(usuario);
+            
+        }
+        
+    }
+
+    //SELECIONAR CONDUCTOR DISPONIBLE
+    
+    public static Conductor seleccionarConductorDisponible(Servicio servicio){
+        
+        for (Usuario usuario: usuarios){
             if (usuario instanceof Conductor){
-                Conductor conductorDC = (Conductor)usuario;
-                conductores.add(conductorDC);
+                Conductor conductor = (Conductor)usuario;
+                if (servicio instanceof ViajeTaxi){
+                    if (conductor.getEstado().equals(TipoEstado.D) && conductor.getVehiculo().getTipoVehiculo().equals(TipoVehiculo.A)){
+                        return conductor;
+                    }
+                }else if(servicio instanceof Encomienda){
+                    if (conductor.getEstado() == TipoEstado.D && conductor.getVehiculo().getTipoVehiculo() == TipoVehiculo.M){
+                        return conductor;
+                    }
+                }
             }
         }
-        return listaConductores;
+        
+        return null;
     }
+    
+    //CREACION DE SERVICIOS
+    
+    public static void crearServicios(){
+        
+        ArrayList<String> lineasServicios = ManejoArchivos.LeeFichero("servicios.txt");
+        
+        lineasServicios.remove(0);
+        
+        if (!lineasServicios.isEmpty()){
+            
+            for (String linea: lineasServicios){
+                
+                String[] datos = linea.split(",");
+                Ruta ruta = new Ruta(datos[4], datos[5]);
+                
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+                LocalDate localDate = LocalDate.parse(datos[6], formatter);
+                Date fecha = Date.from(localDate.atStartOfDay().atZone(java.time.ZoneId.systemDefault()).toInstant());
+                
+                Conductor conductorServicio = new Conductor();
+                
+                for (Usuario usuario: usuarios){
+                    if (usuario instanceof Conductor){
+                        Conductor conductor = (Conductor)usuario;
+                        if (datos[3].equals(conductor.getNombre()+" "+conductor.getApellido())){
+                        conductorServicio = conductor;
+                        }
+                    }
+                }
+                
+                switch (datos[1]){
+                    
+                    case "T" ->{
+                        
+                        ArrayList<String> lineasViajes = ManejoArchivos.LeeFichero("viajes.txt");
+                        lineasViajes.remove(0);
+                        
+                        for (String linea2: lineasViajes){
+                            
+                            String[] datos2 = linea2.split(",");
+                            
+                            if (datos[0].equals(datos2[0])){
+                                
+                                ViajeTaxi viaje = new ViajeTaxi(Integer.parseInt(datos[0]),datos[2],conductorServicio, ruta, fecha, datos[7],datos2[1], datos2[2]);  
+                                servicios.add(viaje);
+                                
+                            }
+                        }
+                    }
+                    case "E" ->{
+                        
+                        ArrayList<String> lineasEncomiendas = ManejoArchivos.LeeFichero("encomiendas.txt");
+                        lineasEncomiendas.remove(0);
+                        
+                        for (String linea2: lineasEncomiendas){
+                            
+                            String[] datos2 = linea2.split(",");
+                            
+                            if (datos[0].equals(datos2[0])){
+                                
+                                Encomienda encomienda = new Encomienda(Integer.parseInt(datos[0]),datos[2],conductorServicio, ruta, fecha, datos[7],datos2[1], datos2[2], datos2[3]);
+                                encomienda.setNumeroServicio(Integer.parseInt(datos[0]));
+                                encomienda.setRuta(ruta);
+                                encomienda.setFecha(fecha);
+                                encomienda.setHora(datos[7]);
+                                encomienda.setConductor(conductorServicio);
+                                encomienda.setCedulaCliente(datos[2]);
+                                
+                                servicios.add(encomienda);
+                            }
+                        }
+                    }
+                }
+            } 
+        }
+    }
+    
     
     public static void main(String[] args) {
 
-        conductores = crearConductores();
+        crearUsuarios();
+        crearServicios();
         
         Scanner scanner = new Scanner(System.in);
 
@@ -71,9 +171,8 @@ public class Sistema {
 
         // UNA VEZ VALIDADO EL USUARIO; ES NECESARIO UN METODO QUE CONSTRUYA UNA LISTA DE    
         // USUARIOS PARA SEGUIR CON EL PROGRAMA 
-        ArrayList<Usuario> usuariosSistema = crearUsuariosDelSistema();
-
-        Usuario usuarioSistema = identificarClienteConductor(usuarioConsola, usuariosSistema);
+   
+        Usuario usuarioSistema = identificarClienteConductor(usuarioConsola, usuarios);
 
         ejecutarMenu(usuarioSistema);
     }
@@ -110,6 +209,8 @@ public class Sistema {
     public static ArrayList<Vehiculo> crearVehiculos() {
 
         ArrayList<String> datosVehiculos = ManejoArchivos.LeeFichero("vehiculos.txt");
+        
+        datosVehiculos.remove(0);
 
         ArrayList<Vehiculo> vehiculos = new ArrayList<>();
 
@@ -135,8 +236,10 @@ public class Sistema {
     public static ArrayList<Usuario> crearUsuariosDelSistema() {
 
         ArrayList<String> usuarios = ManejoArchivos.LeeFichero("usuarios.txt");
+        
+        usuarios.remove(0);
 
-        ArrayList<Usuario> usuariosSistema = new ArrayList();
+        ArrayList<Usuario> usuariosSistema = new ArrayList<>();
 
         for (String lineaUsuarios : usuarios) {
 
@@ -153,7 +256,7 @@ public class Sistema {
             if (partes[6].equals("R")) {
 
                 ArrayList<String> lineasConductores = ManejoArchivos.LeeFichero("conductores.txt");
-                String codigoVehiculo = "";
+                int codigoVehiculo = 0;
 
                 Conductor usuario = new Conductor(partes[0], partes[1], partes[2], partes[3], partes[4], partes[5]);
 
@@ -161,15 +264,16 @@ public class Sistema {
                     String[] datosConductores = linea.split(",");
                     if (partes[0].equals(datosConductores[0])) {
                         usuario.setEstado(datosConductores[1]);
-                        codigoVehiculo = datosConductores[2];
+                        codigoVehiculo = Integer.parseInt(datosConductores[2]);
                     }
                 }
 
                 ArrayList<Vehiculo> vehiculos = crearVehiculos();
 
                 for (Vehiculo vehiculo : vehiculos) {
-                    if (vehiculo.getCodigoVehiculo().equals(codigoVehiculo)) {
+                    if (vehiculo.getCodigoVehiculo() == codigoVehiculo) {
                         usuario.setVehiculo(vehiculo);
+                        break;
                     }
                 }
 
@@ -294,51 +398,26 @@ public class Sistema {
             int opcion = scanner.nextInt();
 
             switch (opcion) {
-                case 1:
+                case 1 -> {
                     // METODO DE SOLICITAR SERVICIO TAXI
                     Servicio viajeTaxi = cliente.solicitarViajeTaxi();
-                    
                     if (viajeTaxi != null) {
-                        
-                        ArrayList<Servicio> servicios = cliente.getServicios();
-                        
-                        servicios.add(viajeTaxi);
-                        
-                        cliente.setServicios(servicios);
-                        
                         guardarServicio(viajeTaxi, cliente);
-                        
                     }
-                    break;
-                    
-                case 2:
+                }
+                case 2 -> {
                     // METODO DE SOLICITAR SERVICIO ENCOMIENDA
                     Servicio encomienda = cliente.solicitarEntregaEncomiendas();
-                    
                     if (encomienda != null) {
-                        
-                        ArrayList<Servicio> servicios = cliente.getServicios();
-                        
-                        servicios.add(encomienda);
-                        
-                        cliente.setServicios(servicios);
-                        
                         guardarServicio(encomienda, cliente);
-                        
                     }
-                    break;
-                    
-                case 3:
-                    cliente.consultarServicios();
-                    break;
-                    
-                case 4:
+                }  
+                case 3 -> cliente.consultarServicios();
+                case 4 -> {
                     System.out.println("Gracias por usar nuestrar aplicacion! G8");
                     System.exit(0);
-                    break;
-                    
-                default:
-                    System.out.println("La opcion ingresada no es valida");
+                }
+                default -> System.out.println("La opcion ingresada no es valida");
             }
 
         } while (true);
@@ -367,20 +446,13 @@ public class Sistema {
             int opcion = scanner.nextInt();
 
             switch (opcion) {
-                case 1:
-                    // METODO CONSULTAR SERVICIO CONDUCTOR
-
-                    break;
-                case 2:
-                    System.out.println(conductor.getVehiculo() + "\n");
-                    ;
-                    break;
-                case 3:
+                case 1 -> conductor.consultarServicios();
+                case 2 -> System.out.println(conductor.getVehiculo() + "\n");
+                case 3 -> {
                     System.out.println("Gracias por usar nuestrar aplicacion! G8");
                     System.exit(0);
-                    break;
-                default:
-                    System.out.println("La opcion ingresada no es valida");
+                }
+                default -> System.out.println("La opcion ingresada no es valida");
             }
 
         } while (true);
@@ -415,4 +487,26 @@ public class Sistema {
         ManejoArchivos.EscribirArchivo("servicios.txt", linea);
     }
 
+    
+    public static void guardarServicioTaxi(ViajeTaxi viaje, Pago pago){
+        
+        String linea = viaje.getNumeroServicio()+ ","
+                + viaje.getNumPersonas() + ","
+                + viaje.getDistancia() + ","
+                + viaje.getDistancia() + ","
+                + pago.getSubtotal();
+        
+        ManejoArchivos.EscribirArchivo("viajes.txt", linea);
+    }
+    
+    public static void guardarServicioEncomienda(Encomienda encomienda, Pago pago){
+        
+        String linea = encomienda.getNumeroServicio()+ ","
+                + encomienda.getTipoEncomienda() + ","
+                + encomienda.getCantProductos() + ","
+                + encomienda.getPesoKG() + ","
+                + pago.getSubtotal();
+        
+        ManejoArchivos.EscribirArchivo("encomiendas.txt", linea);
+    }
 }

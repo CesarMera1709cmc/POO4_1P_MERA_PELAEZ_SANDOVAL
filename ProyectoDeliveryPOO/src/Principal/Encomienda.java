@@ -15,19 +15,17 @@ public class Encomienda extends Servicio {
     private int cantProductos;
     private TipoEncomienda tipoEncomienda;
     private double pesoKG;
-    protected String hora;
 
     
-    //CONSTRUCTORES
+    //CONSTRUCTOR
     public Encomienda(){
         
     }
-    
-    public Encomienda(Ruta ruta, Date fecha, Conductor conductor,int cantProductos, TipoEncomienda tipoEncomienda, double pesoKG, String hora) {
-        super(ruta,fecha,hora,conductor);
-        this.cantProductos = cantProductos;
-        this.tipoEncomienda = tipoEncomienda;
-        this.pesoKG = pesoKG;
+    public Encomienda(int numeroServicio, String cedulaCliente, Conductor conductor, Ruta ruta, Date fecha, String hora,String tipoEncomienda, String cantProductos, String pesoKG){
+        super(numeroServicio, cedulaCliente, conductor, ruta, fecha, hora);
+        this.tipoEncomienda = TipoEncomienda.valueOf(tipoEncomienda);
+        this.cantProductos = Integer.parseInt(cantProductos);
+        this.pesoKG = Double.parseDouble(pesoKG);
     }
     
     //GETTERS Y SETTERS
@@ -61,7 +59,7 @@ public class Encomienda extends Servicio {
         return """
                /************************************************************/
                Tipo: Viaje
-               Tipo Encomienda: """ + tipoEncomienda
+               Tipo Encomienda:"""+" "+tipoEncomienda
                 + "\nCantidad: " + cantProductos
                 + super.toString();
     }
@@ -73,7 +71,7 @@ public class Encomienda extends Servicio {
         double subtotal = this.cantProductos + 4;
         double total = subtotal;
         double[] valoresAPagar = {subtotal, total};
-        System.out.println("Subotal a pagar por el servicio: "+subtotal);
+        System.out.println("Subotal a pagar por el servicio: "+subtotal+" USD");
         return valoresAPagar;
     }
     public double[] calcularValorAPagar(String TC){

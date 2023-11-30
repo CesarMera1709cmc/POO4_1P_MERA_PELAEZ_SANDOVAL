@@ -20,7 +20,6 @@ public abstract class Usuario {
     protected String contrasena;
     protected String celular;
     protected int edad;
-    protected ArrayList<Servicio> servicios = new ArrayList();
     
     public Usuario() {
     }
@@ -93,21 +92,10 @@ public abstract class Usuario {
         this.edad = edad;
     }
 
-    public ArrayList<Servicio> getServicios() {
-        return servicios;
-    }
-
-    public void setServicios(ArrayList<Servicio> servicios) {
-        this.servicios = servicios;
-    }
     
-    //METODOS
+    //METODO ABSTRACTO CONSULTAR SERVICIOS
+    public abstract void consultarServicios();
     
-    public void consultarServicios(){
-        for (Servicio servicio : this.getServicios()) {
-            System.out.println(servicio);
-        }
-    }
     /*
     @Override
     public String toString() {

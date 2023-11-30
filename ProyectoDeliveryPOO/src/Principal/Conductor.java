@@ -19,24 +19,6 @@ public class Conductor extends Usuario {
     public Conductor() {
     }
 
-    public void consultarServiciosAsignados(ArrayList<Servicio> serviciosconductor){
-    System.out.println("/*********************SERVICIOS ASIGNADOS******************/");
-    System.out.println("/                                                         */");
-    System.out.println("/**********************************************************/");
-    for (Servicio servicio : serviciosconductor) {
-        if(this.equals(servicio.conductor)){
-            if (servicio instanceof Encomienda) {
-            Encomienda encomienda = (Encomienda) servicio;
-            System.out.println( encomienda); 
-        } else if (servicio instanceof ViajeTaxi) {
-            ViajeTaxi viajeTaxi = (ViajeTaxi) servicio;
-            System.out.println(viajeTaxi);
-        } else {
-            System.out.println("Tipo de servicio desconocido");
-        }
-        }
-    }
-    }
     public Conductor(String numCedula, String nombre, String apellido, String user, String contrasena, String celular) {
         super(numCedula, nombre, apellido, user, contrasena, celular);
     }
@@ -61,4 +43,23 @@ public class Conductor extends Usuario {
         this.estado = TipoEstado.valueOf(estado);
     }
     
+    
+    //TO STRING
+    @Override
+    public String toString(){
+        return nombre+" "+apellido+" "+vehiculo;
+    }
+    
+    @Override
+    public void consultarServicios(){
+        System.out.println("/*********************SERVICIOS ASIGNADOS********************/");
+        System.out.println("/                                                           */");
+        System.out.println("/************************************************************/");
+        
+        for (Servicio servicio: Sistema.servicios){
+            if ((this.nombre+" "+this.apellido).equals(servicio.getCedulaCliente())){
+                System.out.println(servicio);
+            }
+        }
+    }
 }

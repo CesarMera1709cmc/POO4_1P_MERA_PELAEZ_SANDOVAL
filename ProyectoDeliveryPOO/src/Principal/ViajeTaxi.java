@@ -12,13 +12,17 @@ import java.util.Random;
  */
 public class ViajeTaxi extends Servicio {
     private int numPersonas;
-    //CONSTRUCTORES
+    private int distancia;
+    
+    //CONSTRUCTOR
     public ViajeTaxi(){
         
     }
-    public ViajeTaxi(Ruta ruta, Date fecha, String hora, Conductor conductor, int numPersonas){
-        super(ruta, fecha, hora, conductor);
-        this.numPersonas = numPersonas;
+
+    public ViajeTaxi(int numeroServicio, String cedulaCliente, Conductor conductor, Ruta ruta, Date fecha, String hora,String numPersonas, String distancia){
+        super(numeroServicio, cedulaCliente, conductor, ruta, fecha, hora);
+        this.numPersonas = Integer.parseInt(numPersonas);
+        this.distancia = Integer.parseInt(distancia);
     }
     
     //GETTERS Y SETTERS
@@ -29,6 +33,14 @@ public class ViajeTaxi extends Servicio {
     public void setNumPersonas(int numPersonas) {
         this.numPersonas = numPersonas;
     }
+
+    public int getDistancia() {
+        return distancia;
+    }
+
+    public void setDistancia(int distancia) {
+        this.distancia = distancia;
+    }
     
     //METODOS
     @Override
@@ -36,18 +48,19 @@ public class ViajeTaxi extends Servicio {
         return """
                /************************************************************/
                Tipo: Viaje
-               Cantidad de pasajeros:""" + numPersonas
+               Cantidad de pasajeros:"""+" "+numPersonas
                 + super.toString();
     }
     
     @Override
     public double[] calcularValorAPagar(){
         Random rd = new Random();
-        int kms = rd.nextInt(41)+5;
-        double subtotal = kms*0.5;
-        double total = kms;
+        int distanciaKm = rd.nextInt(41)+5;
+        this.setDistancia(distanciaKm);
+        double subtotal = distanciaKm*0.5;
+        double total = distanciaKm;
         double[] valoresAPagar = {subtotal, total};
-        System.out.println("Subotal a pagar por el servicio: "+subtotal);
+        System.out.println("Subotal a pagar por el servicio: "+subtotal+" USD");
         return valoresAPagar;
     }
     public double[] calcularValorAPagar(String TC){
