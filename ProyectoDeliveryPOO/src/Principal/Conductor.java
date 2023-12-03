@@ -23,10 +23,7 @@ public class Conductor extends Usuario {
         super(numCedula, nombre, apellido, user, contrasena, celular);
     }
 
-    
-
     // Getters & Setters  ----> Conductor
-
     public Vehiculo getVehiculo() {
         return vehiculo;
     }
@@ -42,24 +39,31 @@ public class Conductor extends Usuario {
     public void setEstado(String estado) {
         this.estado = TipoEstado.valueOf(estado);
     }
-    
-    
+
     //TO STRING
     @Override
-    public String toString(){
-        return nombre+" "+apellido+" "+vehiculo;
+    public String toString() {
+        return nombre + " " + apellido + " " + vehiculo;
     }
-    
+
     @Override
-    public void consultarServicios(){
+    public void consultarServicios() {
         System.out.println("/*********************SERVICIOS ASIGNADOS********************/");
         System.out.println("/                                                           */");
         System.out.println("/************************************************************/");
-        
-        for (Servicio servicio: Sistema.servicios){
-            if ((this.nombre+" "+this.apellido).equals(servicio.getCedulaCliente())){
+
+        boolean serviciosEncontrados = false;
+
+        for (Servicio servicio : Sistema.servicios) {
+            if (this.equals(servicio.getConductor())) {
                 System.out.println(servicio);
+                serviciosEncontrados = true;
             }
         }
+
+        if (!serviciosEncontrados) {
+            System.out.println("NO HAY NINGUN SERVICIO ASIGNADO HASTA AHORA");
+        }
     }
+
 }

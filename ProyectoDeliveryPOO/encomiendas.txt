@@ -1,1 +1,2 @@
 numeroServicio,tipoEncomienda,cantidadProductos,peso,subtotal
+38748,MEDICAMENTOS,5,3.0,9.0

@@ -1,1 +1,4 @@
 idPago,FechaPago,numeroServicio,formaPago,cedulaCliente,subtotal,valorPagar
+235,03/03/a. m.,38748,E,0923547362,9.0,9.0
+467,21/01/a. m.,57630,TC,0923547362,16.0,34.4
+399,12/01/a. m.,53687,E,0923547362,3.0,6.0

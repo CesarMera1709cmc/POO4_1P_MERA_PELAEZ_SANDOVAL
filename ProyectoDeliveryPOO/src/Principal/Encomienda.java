@@ -58,7 +58,7 @@ public class Encomienda extends Servicio {
     public String toString(){
         return """
                /************************************************************/
-               Tipo: Viaje
+               Encomienda
                Tipo Encomienda:"""+" "+tipoEncomienda
                 + "\nCantidad: " + cantProductos
                 + super.toString();

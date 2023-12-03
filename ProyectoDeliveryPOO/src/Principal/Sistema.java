@@ -13,134 +13,131 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Scanner;
+import java.util.regex.Pattern;
 
 /**
  *
  * @author frank
  */
 public class Sistema {
+
     public static ArrayList<Usuario> usuarios = new ArrayList<>();
     public static ArrayList<Servicio> servicios = new ArrayList<>();
-    
+
     //CREACION DE USUARIOS
-    
-    public static void crearUsuarios(){
-        
+    public static void crearUsuarios() {
+
         ArrayList<Usuario> usuariosSistema = crearUsuariosDelSistema();
-        
-        for (Usuario usuario: usuariosSistema){
-            
+
+        for (Usuario usuario : usuariosSistema) {
+
             usuarios.add(usuario);
-            
+
         }
-        
+
     }
 
     //SELECIONAR CONDUCTOR DISPONIBLE
-    
-    public static Conductor seleccionarConductorDisponible(Servicio servicio){
-        
-        for (Usuario usuario: usuarios){
-            if (usuario instanceof Conductor){
-                Conductor conductor = (Conductor)usuario;
-                if (servicio instanceof ViajeTaxi){
-                    if (conductor.getEstado().equals(TipoEstado.D) && conductor.getVehiculo().getTipoVehiculo().equals(TipoVehiculo.A)){
+    public static Conductor seleccionarConductorDisponible(Servicio servicio) {
+
+        for (Usuario usuario : usuarios) {
+            if (usuario instanceof Conductor) {
+                Conductor conductor = (Conductor) usuario;
+                if (servicio instanceof ViajeTaxi) {
+                    if (conductor.getEstado().equals(TipoEstado.D) && conductor.getVehiculo().getTipoVehiculo().equals(TipoVehiculo.A)) {
                         return conductor;
                     }
-                }else if(servicio instanceof Encomienda){
-                    if (conductor.getEstado() == TipoEstado.D && conductor.getVehiculo().getTipoVehiculo() == TipoVehiculo.M){
+                } else if (servicio instanceof Encomienda) {
+                    if (conductor.getEstado() == TipoEstado.D && conductor.getVehiculo().getTipoVehiculo() == TipoVehiculo.M) {
                         return conductor;
                     }
                 }
             }
         }
-        
+
         return null;
     }
-    
+
     //CREACION DE SERVICIOS
-    
-    public static void crearServicios(){
-        
+    public static void crearServicios() {
+
         ArrayList<String> lineasServicios = ManejoArchivos.LeeFichero("servicios.txt");
-        
+
         lineasServicios.remove(0);
-        
-        if (!lineasServicios.isEmpty()){
-            
-            for (String linea: lineasServicios){
-                
+
+        if (!lineasServicios.isEmpty()) {
+
+            for (String linea : lineasServicios) {
+
                 String[] datos = linea.split(",");
                 Ruta ruta = new Ruta(datos[4], datos[5]);
-                
+
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
                 LocalDate localDate = LocalDate.parse(datos[6], formatter);
                 Date fecha = Date.from(localDate.atStartOfDay().atZone(java.time.ZoneId.systemDefault()).toInstant());
-                
+
                 Conductor conductorServicio = new Conductor();
-                
-                for (Usuario usuario: usuarios){
-                    if (usuario instanceof Conductor){
-                        Conductor conductor = (Conductor)usuario;
-                        if (datos[3].equals(conductor.getNombre()+" "+conductor.getApellido())){
-                        conductorServicio = conductor;
+
+                for (Usuario usuario : usuarios) {
+                    if (usuario instanceof Conductor) {
+                        Conductor conductor = (Conductor) usuario;
+                        if (datos[3].equals(conductor.getNombre() + " " + conductor.getApellido())) {
+                            conductorServicio = conductor;
                         }
                     }
                 }
-                
-                switch (datos[1]){
-                    
-                    case "T" ->{
-                        
+
+                switch (datos[1]) {
+
+                    case "T" -> {
+
                         ArrayList<String> lineasViajes = ManejoArchivos.LeeFichero("viajes.txt");
                         lineasViajes.remove(0);
-                        
-                        for (String linea2: lineasViajes){
-                            
+
+                        for (String linea2 : lineasViajes) {
+
                             String[] datos2 = linea2.split(",");
-                            
-                            if (datos[0].equals(datos2[0])){
-                                
-                                ViajeTaxi viaje = new ViajeTaxi(Integer.parseInt(datos[0]),datos[2],conductorServicio, ruta, fecha, datos[7],datos2[1], datos2[2]);  
+
+                            if (datos[0].equals(datos2[0])) {
+
+                                ViajeTaxi viaje = new ViajeTaxi(Integer.parseInt(datos[0]), datos[2], conductorServicio, ruta, fecha, datos[7], datos2[1], datos2[2]);
                                 servicios.add(viaje);
-                                
+
                             }
                         }
                     }
-                    case "E" ->{
-                        
+                    case "E" -> {
+
                         ArrayList<String> lineasEncomiendas = ManejoArchivos.LeeFichero("encomiendas.txt");
                         lineasEncomiendas.remove(0);
-                        
-                        for (String linea2: lineasEncomiendas){
-                            
+
+                        for (String linea2 : lineasEncomiendas) {
+
                             String[] datos2 = linea2.split(",");
-                            
-                            if (datos[0].equals(datos2[0])){
-                                
-                                Encomienda encomienda = new Encomienda(Integer.parseInt(datos[0]),datos[2],conductorServicio, ruta, fecha, datos[7],datos2[1], datos2[2], datos2[3]);
+
+                            if (datos[0].equals(datos2[0])) {
+
+                                Encomienda encomienda = new Encomienda(Integer.parseInt(datos[0]), datos[2], conductorServicio, ruta, fecha, datos[7], datos2[1], datos2[2], datos2[3]);
                                 encomienda.setNumeroServicio(Integer.parseInt(datos[0]));
                                 encomienda.setRuta(ruta);
                                 encomienda.setFecha(fecha);
                                 encomienda.setHora(datos[7]);
                                 encomienda.setConductor(conductorServicio);
                                 encomienda.setCedulaCliente(datos[2]);
-                                
+
                                 servicios.add(encomienda);
                             }
                         }
                     }
                 }
-            } 
+            }
         }
     }
-    
-    
+
     public static void main(String[] args) {
 
         crearUsuarios();
         crearServicios();
-        
         Scanner scanner = new Scanner(System.in);
 
         System.out.println(" ++++++++++++++++++++++++++++++++++++");
@@ -171,20 +168,21 @@ public class Sistema {
 
         // UNA VEZ VALIDADO EL USUARIO; ES NECESARIO UN METODO QUE CONSTRUYA UNA LISTA DE    
         // USUARIOS PARA SEGUIR CON EL PROGRAMA 
-   
         Usuario usuarioSistema = identificarClienteConductor(usuarioConsola, usuarios);
 
         ejecutarMenu(usuarioSistema);
     }
 
-/**
- * 
- * Este metodo valida el usuario y contraseña ingresado por el usuario de la consola
- * @param usuario Usuario en formato String requerido para iniciar sesion
- * @param contrasena Contraseña en formato String requerida para iniciar sesion 
- * @return Retorna una valor booleano True se se inicio sesion correctamente
- */   
-    
+    /**
+     *
+     * Este metodo valida el usuario y contraseña ingresado por el usuario de la
+     * consola
+     *
+     * @param usuario Usuario en formato String requerido para iniciar sesion
+     * @param contrasena Contraseña en formato String requerida para iniciar
+     * sesion
+     * @return Retorna una valor booleano True se se inicio sesion correctamente
+     */
     public static boolean validarUsuarioSistema(String usuario, String contrasena) {
         ArrayList<String> usuarios = ManejoArchivos.LeeFichero("usuarios.txt");
 
@@ -202,14 +200,15 @@ public class Sistema {
     }
 
     /**
-     * Este metodo crea un ArrayList de vehiculos a partir de un archivo de texto
+     * Este metodo crea un ArrayList de vehiculos a partir de un archivo de
+     * texto
+     *
      * @return Retorna el ArrayList de vehiculos creado
      */
-    
     public static ArrayList<Vehiculo> crearVehiculos() {
 
         ArrayList<String> datosVehiculos = ManejoArchivos.LeeFichero("vehiculos.txt");
-        
+
         datosVehiculos.remove(0);
 
         ArrayList<Vehiculo> vehiculos = new ArrayList<>();
@@ -226,17 +225,18 @@ public class Sistema {
 
         return vehiculos;
     }
-    
+
     /**
-     * Este metodo crea un ArrayList de tipo Usuario a partir de un archivo de texto con el formato de usuarios en especifico.
+     * Este metodo crea un ArrayList de tipo Usuario a partir de un archivo de
+     * texto con el formato de usuarios en especifico.
+     *
      * @return Retorna el ArrayList de Usuarios creados
      */
-
     //METODO PARA CREAR USUARIOS DEL SISTEMA
     public static ArrayList<Usuario> crearUsuariosDelSistema() {
 
         ArrayList<String> usuarios = ManejoArchivos.LeeFichero("usuarios.txt");
-        
+
         usuarios.remove(0);
 
         ArrayList<Usuario> usuariosSistema = new ArrayList<>();
@@ -286,7 +286,9 @@ public class Sistema {
     }
 
     /**
-     * Este metodo solicita la edad al usuario de la consola, siempre y cuando sea un entero y se encuentre en un rango valido.
+     * Este metodo solicita la edad al usuario de la consola, siempre y cuando
+     * sea un entero y se encuentre en un rango valido.
+     *
      * @return Retorna el valor entero de la edad.
      */
     public static int ingresarEdad() {
@@ -298,10 +300,10 @@ public class Sistema {
             System.out.println("Ingrese su edad: ");
             if (scanner.hasNextInt()) { // VALIDA QUE LA ENTRADA SEA UN NUMERO ENTERO
                 edad = scanner.nextInt();
-                if (edad >= 15 && edad <= 100) {  // VALIDA LA EDAD EN UN RANGO CORRECTO Y ADECUADO
+                if (edad >= 18 && edad <= 100) {  // VALIDA LA EDAD EN UN RANGO CORRECTO Y ADECUADO
                     entradaValida = true;
                 } else {
-                    System.out.println("La edad ingresada no es esta en un rango valido");
+                    System.out.println("La edad ingresada no es esta en un rango valido (APLICACION SOLO PARA +18)");
                 }
             } else {
                 System.out.println("Por favor, ingrese un numero entero");
@@ -311,14 +313,17 @@ public class Sistema {
 
         return edad;
     }
-    
-    /**
-     * Este metodo es utilizado para identificar el tipo de usuario que se ha ingresado por la consola (No valida)
-     * @param usuario String usuario ingresado por la consola previamente
-     * @param listaUsuariosSistema ArrayList de Usuarios previamente creados a partir del archivo de texto 
-     * @return Retorna un objeto de tipo Usuario el cual sera utilizado para correr la aplicacion.
-     */
 
+    /**
+     * Este metodo es utilizado para identificar el tipo de usuario que se ha
+     * ingresado por la consola (No valida)
+     *
+     * @param usuario String usuario ingresado por la consola previamente
+     * @param listaUsuariosSistema ArrayList de Usuarios previamente creados a
+     * partir del archivo de texto
+     * @return Retorna un objeto de tipo Usuario el cual sera utilizado para
+     * correr la aplicacion.
+     */
     public static Usuario identificarClienteConductor(String usuario, ArrayList<Usuario> listaUsuariosSistema) {
 
         Scanner scanner = new Scanner(System.in);
@@ -335,11 +340,16 @@ public class Sistema {
                 int edadCliente = ingresarEdad();
                 cliente.setEdad(edadCliente);
 
-                System.out.println("Ingresar el numero de su tarjeta de Credito/Debito: ");
-       
-                String numeroTarjeta = scanner.nextLine();
-                cliente.setNumTarjetaCredito(numeroTarjeta);
+                String numeroTarjeta;
+                do {
+                    System.out.println("Ingresar el numero de su tarjeta de Credito/Debito ** FORMATO 1234 1234 1234 1234");
+                    numeroTarjeta = scanner.nextLine();
+                    if (!validarFormatoTarjetaCredito(numeroTarjeta)) {
+                        System.out.println("Formato de tarjeta no valido. Debe tener 16 dígitos.");
+                    }
+                } while (!validarFormatoTarjetaCredito(numeroTarjeta));
 
+                cliente.setNumTarjetaCredito(numeroTarjeta);
                 System.out.println("GRACIAS POR COMPLETAR LOS DATOS FALTANTES.");
                 System.out.println("");
 
@@ -361,10 +371,27 @@ public class Sistema {
         return null;
     }
 
+    public static boolean validarFormatoTarjetaCredito(String numeroTarjeta) {
+
+        String tarjetaSinEspacios = numeroTarjeta.replaceAll("\\s", "");
+        if (tarjetaSinEspacios.length() != 16) {
+            return false;
+        }
+
+        for (char c : tarjetaSinEspacios.toCharArray()) {
+            if (!Character.isDigit(c)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     /**
-     * Este metodo ejecuta el Menu, la interfaz depende si el usuario ingresado como parametro es de tipo Cliente
-     * o conductor.
-     * @param usuario El parametro es una instancia de tipo Usuario, creada con los metodos previamente.
+     * Este metodo ejecuta el Menu, la interfaz depende si el usuario ingresado
+     * como parametro es de tipo Cliente o conductor.
+     *
+     * @param usuario El parametro es una instancia de tipo Usuario, creada con
+     * los metodos previamente.
      */
     public static void ejecutarMenu(Usuario usuario) {
 
@@ -378,6 +405,7 @@ public class Sistema {
 
     /**
      * Este metodo abre la interfaz de el menu para el cliente
+     *
      * @param cliente Recibe como parametro una instancia de Cliente
      */
     private static void menuCliente(Cliente cliente) {
@@ -411,13 +439,15 @@ public class Sistema {
                     if (encomienda != null) {
                         guardarServicio(encomienda, cliente);
                     }
-                }  
-                case 3 -> cliente.consultarServicios();
+                }
+                case 3 ->
+                    cliente.consultarServicios();
                 case 4 -> {
                     System.out.println("Gracias por usar nuestrar aplicacion! G8");
                     System.exit(0);
                 }
-                default -> System.out.println("La opcion ingresada no es valida");
+                default ->
+                    System.out.println("La opcion ingresada no es valida");
             }
 
         } while (true);
@@ -425,10 +455,10 @@ public class Sistema {
 
     /**
      * Este metodo abre la interfaz del menu para el Conductor
+     *
      * @param conductor Recibe como parametro una instancia de Condcutor
-     * 
+     *
      */
-    
     private static void menuConductor(Conductor conductor) {
 
         Scanner scanner = new Scanner(System.in);
@@ -446,25 +476,30 @@ public class Sistema {
             int opcion = scanner.nextInt();
 
             switch (opcion) {
-                case 1 -> conductor.consultarServicios();
-                case 2 -> System.out.println(conductor.getVehiculo() + "\n");
+                case 1 ->
+                    conductor.consultarServicios();
+                case 2 ->
+                    System.out.println(conductor.getVehiculo() + "\n");
                 case 3 -> {
                     System.out.println("Gracias por usar nuestrar aplicacion! G8");
                     System.exit(0);
                 }
-                default -> System.out.println("La opcion ingresada no es valida");
+                default ->
+                    System.out.println("La opcion ingresada no es valida");
             }
 
         } while (true);
 
     }
-    
-    /**
-     * Este metodo guarda los servicio creados por el cliente en un archivo de texto
-     * @param servicio Recibe como parametro el objeto de tipo Servicio creado
-     * @param cliente  Recibe como parametro el objeto de tipo Cliente, el cual crea el servicio
-     */
 
+    /**
+     * Este metodo guarda los servicio creados por el cliente en un archivo de
+     * texto
+     *
+     * @param servicio Recibe como parametro el objeto de tipo Servicio creado
+     * @param cliente Recibe como parametro el objeto de tipo Cliente, el cual
+     * crea el servicio
+     */
     public static void guardarServicio(Servicio servicio, Cliente cliente) {
         String tipoServicio = "";
         if (servicio instanceof ViajeTaxi) {
@@ -487,26 +522,25 @@ public class Sistema {
         ManejoArchivos.EscribirArchivo("servicios.txt", linea);
     }
 
-    
-    public static void guardarServicioTaxi(ViajeTaxi viaje, Pago pago){
-        
-        String linea = viaje.getNumeroServicio()+ ","
+    public static void guardarServicioTaxi(ViajeTaxi viaje, Pago pago) {
+
+        String linea = viaje.getNumeroServicio() + ","
                 + viaje.getNumPersonas() + ","
                 + viaje.getDistancia() + ","
                 + viaje.getDistancia() + ","
                 + pago.getSubtotal();
-        
+
         ManejoArchivos.EscribirArchivo("viajes.txt", linea);
     }
-    
-    public static void guardarServicioEncomienda(Encomienda encomienda, Pago pago){
-        
-        String linea = encomienda.getNumeroServicio()+ ","
+
+    public static void guardarServicioEncomienda(Encomienda encomienda, Pago pago) {
+
+        String linea = encomienda.getNumeroServicio() + ","
                 + encomienda.getTipoEncomienda() + ","
                 + encomienda.getCantProductos() + ","
                 + encomienda.getPesoKG() + ","
                 + pago.getSubtotal();
-        
+
         ManejoArchivos.EscribirArchivo("encomiendas.txt", linea);
     }
 }
