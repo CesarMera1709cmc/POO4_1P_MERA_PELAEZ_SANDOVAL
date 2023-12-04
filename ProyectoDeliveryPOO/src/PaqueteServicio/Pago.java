@@ -2,9 +2,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Principal;
+package PaqueteServicio;
 
-import Principal.enums.TipoFormaPago;
+import PaqueteEnums.TipoFormaPago;
+import Principal.Cliente;
 import Principal.lecturaArchivos.ManejoArchivos;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -159,7 +160,7 @@ public class Pago {
 
         pago.setSubtotal(subtotal);
 
-        SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/aaaa");
+        SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
 
         String linea = pago.getIdPago() + ","
                 + formatoFecha.format(pago.getFechaPago()) + ","

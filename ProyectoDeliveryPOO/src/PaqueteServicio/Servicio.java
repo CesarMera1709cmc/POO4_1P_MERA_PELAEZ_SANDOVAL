@@ -2,9 +2,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Principal;
+package PaqueteServicio;
 
-import Principal.enums.TipoFormaPago;
+import PaqueteEnums.TipoFormaPago;
+import Principal.Conductor;
 import Principal.lecturaArchivos.ManejoArchivos;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -52,6 +53,7 @@ public abstract class Servicio {
             if (sc.hasNextInt()){
                 anio = sc.nextInt();
                 if (anio>=2023){
+                    sc.nextLine();
                     entradaValida = true;
                 }else{
                     System.out.println("El anio ingresado no esta en un rango valido");
@@ -68,6 +70,7 @@ public abstract class Servicio {
             if (sc.hasNextInt()){
                 mes = sc.nextInt();
                 if (mes>=1 && mes<=12){
+                    sc.nextLine();
                     entradaValida = true;
                 }else{
                     System.out.println("El mes ingresado no esta en un rango valido");
@@ -84,6 +87,7 @@ public abstract class Servicio {
             if (sc.hasNextInt()){
                 dia = sc.nextInt();
                 if (dia>=1 && dia<=31){
+                    sc.nextLine();
                     entradaValida = true;
                 }else{
                     System.out.println("El dia ingresado no esta en un rango valido");
@@ -93,8 +97,8 @@ public abstract class Servicio {
                 sc.next();
             }
         }while(!entradaValida);
-        
-        Date fechaIngresada = new Date(anio, mes, dia);
+        // SE RESTAN 1900 AÑOS POR CONDICIONES DEL DATE
+        Date fechaIngresada = new Date(anio-1900, mes, dia);
         
         int horaIngresada = 0;
         int minutos = 0;
@@ -105,6 +109,7 @@ public abstract class Servicio {
             if (sc.hasNextInt()){
                 horaIngresada = sc.nextInt();
                 if (horaIngresada>=0 && horaIngresada<=23){
+                    sc.nextLine();
                     entradaValida = true;
                 }else{
                     System.out.println("La hora ingresada no esta en un rango valido");
@@ -121,6 +126,7 @@ public abstract class Servicio {
             if (sc.hasNextInt()){
                 minutos = sc.nextInt();
                 if (minutos>=0 && minutos<=59){
+                    sc.nextLine();
                     entradaValida = true;
                 }else{
                     System.out.println("Los minutos ingresados no estan en un rango valido");
@@ -132,7 +138,6 @@ public abstract class Servicio {
         }while(!entradaValida);
         
         String horaMinutos = horaIngresada+":"+minutos;
-        sc.nextLine();
         
         fecha = fechaIngresada;
         hora = horaMinutos;

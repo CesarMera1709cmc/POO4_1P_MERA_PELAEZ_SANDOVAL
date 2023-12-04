@@ -4,7 +4,8 @@
  */
 package Principal;
 
-import Principal.enums.TipoEstado;
+import PaqueteServicio.Servicio;
+import PaqueteEnums.TipoEstado;
 import java.util.ArrayList;
 
 /**

@@ -4,7 +4,7 @@
  */
 package Principal;
 
-import Principal.enums.TipoVehiculo;
+import PaqueteEnums.TipoVehiculo;
 
 /**
  *

@@ -4,8 +4,13 @@ package Principal;
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-import Principal.enums.TipoEstado;
-import Principal.enums.TipoVehiculo;
+import PaqueteServicio.Pago;
+import PaqueteServicio.Ruta;
+import PaqueteServicio.Servicio;
+import PaqueteServicio.ViajeTaxi;
+import PaqueteServicio.Encomienda;
+import PaqueteEnums.TipoEstado;
+import PaqueteEnums.TipoVehiculo;
 import Principal.lecturaArchivos.ManejoArchivos;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -22,19 +27,6 @@ public class Sistema {
 
     public static ArrayList<Usuario> usuarios = new ArrayList<>();
     public static ArrayList<Servicio> servicios = new ArrayList<>();
-
-    //CREACION DE USUARIOS
-    public static void crearUsuarios() {
-
-        ArrayList<Usuario> usuariosSistema = crearUsuariosDelSistema();
-
-        for (Usuario usuario : usuariosSistema) {
-
-            usuarios.add(usuario);
-
-        }
-
-    }
 
     /**
      * Este metodo busca entre los usuarios registrados para encontrar un
@@ -69,6 +61,154 @@ public class Sistema {
         }
 
         return null;
+    }
+
+    public static void main(String[] args) {
+
+        crearUsuariosDelSistema();
+        crearServicios();
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println(" ++++++++++++++++++++++++++++++++++++");
+        System.out.println("");
+        System.out.println("         BIENVENIDO AL SISTEMA                       ");
+        System.out.println("");
+        System.out.println(" ++++++++++++++++++++++++++++++++++++");
+
+        String usuarioConsola;
+        String usuarioContrasena;
+
+        do {
+            System.out.println("");
+            System.out.println("USUARIO: ");
+            usuarioConsola = scanner.nextLine();
+
+            System.out.println("CONTRASENA: ");
+            usuarioContrasena = scanner.nextLine();
+
+            if (!validarUsuarioSistema(usuarioConsola, usuarioContrasena)) {
+                System.out.println("EL USUARIO O CONTRASEÑA INGRESADOS SON INCORRECTOS");
+                System.out.println("VUELVA A INGRESAR USUARIO Y CONTRASEÑA");
+            }
+        } while (!validarUsuarioSistema(usuarioConsola, usuarioContrasena));
+
+        System.out.println("INICIO DE SESION CORRECTO.");
+        System.out.println("BIENVENID@ : " + usuarioConsola);
+
+        // UNA VEZ VALIDADO EL USUARIO; ES NECESARIO UN METODO QUE CONSTRUYA UNA LISTA DE    
+        // USUARIOS PARA SEGUIR CON EL PROGRAMA 
+        Usuario usuarioSistema = identificarClienteConductor(usuarioConsola, usuarios);
+
+        ejecutarMenu(usuarioSistema);
+    }
+
+    /**
+     *
+     * Este metodo valida el usuario y contraseña ingresado por el usuario de la
+     * consola
+     *
+     * @param usuario Usuario en formato String requerido para iniciar sesion
+     * @param contrasena Contraseña en formato String requerida para iniciar
+     * sesion
+     * @return Retorna una valor booleano True se se inicio sesion correctamente
+     */
+    public static boolean validarUsuarioSistema(String usuario, String contrasena) {
+        
+        ArrayList<String> usuarios = ManejoArchivos.LeeFichero("usuarios.txt");
+
+        for (String lineaUsuarios : usuarios) {
+
+            String[] partes = lineaUsuarios.split(",");
+
+            if (partes[3].equals(usuario) && partes[4].equals(contrasena)) {
+
+                return true;
+            }
+        }
+        return false;
+
+    }
+
+    /**
+     * Este metodo crea un ArrayList de vehiculos a partir de un archivo de
+     * texto
+     *
+     * @return Retorna el ArrayList de vehiculos creado
+     */
+    public static ArrayList<Vehiculo> crearVehiculos() {
+
+        ArrayList<String> datosVehiculos = ManejoArchivos.LeeFichero("vehiculos.txt");
+
+        datosVehiculos.remove(0);
+
+        ArrayList<Vehiculo> vehiculos = new ArrayList<>();
+
+        for (String lineaVehiculos : datosVehiculos) {
+
+            String[] datos = lineaVehiculos.split(",");
+
+            Vehiculo vehiculo = new Vehiculo(datos[0], datos[1], datos[2], datos[3], datos[4]);
+
+            vehiculos.add(vehiculo);
+
+        }
+
+        return vehiculos;
+    }
+
+    /**
+     * Este metodo modifica el ArrayList de usuarios, añadiendo a los usuarios
+     * dentro del archivo usuarios.txt
+     */
+    //METODO PARA CREAR USUARIOS DEL SISTEMA
+    public static void crearUsuariosDelSistema() {
+
+        ArrayList<String> usuariosFichero = ManejoArchivos.LeeFichero("usuarios.txt");
+
+        usuariosFichero.remove(0);
+
+        for (String lineaUsuarios : usuariosFichero) {
+
+            String[] partes = lineaUsuarios.split(",");
+
+            if (partes[6].equals("C")) {
+
+                Cliente usuario = new Cliente(partes[0], partes[1], partes[2], partes[3], partes[4], partes[5]);
+
+                usuarios.add(usuario);
+
+            } // Redudancia en PDF : EDAD CONDUCTOR? CEDULA CODUCTOR? LICENCIA?
+
+            if (partes[6].equals("R")) {
+
+                ArrayList<String> lineasConductores = ManejoArchivos.LeeFichero("conductores.txt");
+                int codigoVehiculo = 0;
+
+                Conductor usuario = new Conductor(partes[0], partes[1], partes[2], partes[3], partes[4], partes[5]);
+
+                for (String linea : lineasConductores) {
+                    String[] datosConductores = linea.split(",");
+                    if (partes[0].equals(datosConductores[0])) {
+                        usuario.setEstado(datosConductores[1]);
+                        codigoVehiculo = Integer.parseInt(datosConductores[2]);
+                    }
+                }
+
+                ArrayList<Vehiculo> vehiculos = crearVehiculos();
+
+                for (Vehiculo vehiculo : vehiculos) {
+                    if (vehiculo.getCodigoVehiculo() == codigoVehiculo) {
+                        usuario.setVehiculo(vehiculo);
+                        break;
+                    }
+                }
+
+                usuarios.add(usuario);
+            }
+
+        }
+
+       
     }
 
     /**
@@ -159,159 +299,8 @@ public class Sistema {
                 }
             }
         }
-    }
-
-    public static void main(String[] args) {
-
-        crearUsuarios();
-        crearServicios();
-        Scanner scanner = new Scanner(System.in);
-
-        System.out.println(" ++++++++++++++++++++++++++++++++++++");
-        System.out.println("");
-        System.out.println("         BIENVENIDO AL SISTEMA                       ");
-        System.out.println("");
-        System.out.println(" ++++++++++++++++++++++++++++++++++++");
-
-        String usuarioConsola;
-        String usuarioContrasena;
-
-        do {
-            System.out.println("");
-            System.out.println("USUARIO: ");
-            usuarioConsola = scanner.nextLine();
-
-            System.out.println("CONTRASENA: ");
-            usuarioContrasena = scanner.nextLine();
-
-            if (!validarUsuarioSistema(usuarioConsola, usuarioContrasena)) {
-                System.out.println("EL USUARIO O CONTRASEÑA INGRESADOS SON INCORRECTOS");
-                System.out.println("VUELVA A INGRESAR USUARIO Y CONTRASEÑA");
-            }
-        } while (!validarUsuarioSistema(usuarioConsola, usuarioContrasena));
-
-        System.out.println("INICIO DE SESION CORRECTO.");
-        System.out.println("BIENVENID@ : " + usuarioConsola);
-
-        // UNA VEZ VALIDADO EL USUARIO; ES NECESARIO UN METODO QUE CONSTRUYA UNA LISTA DE    
-        // USUARIOS PARA SEGUIR CON EL PROGRAMA 
-        Usuario usuarioSistema = identificarClienteConductor(usuarioConsola, usuarios);
-
-        ejecutarMenu(usuarioSistema);
-    }
-
-    /**
-     *
-     * Este metodo valida el usuario y contraseña ingresado por el usuario de la
-     * consola
-     *
-     * @param usuario Usuario en formato String requerido para iniciar sesion
-     * @param contrasena Contraseña en formato String requerida para iniciar
-     * sesion
-     * @return Retorna una valor booleano True se se inicio sesion correctamente
-     */
-    public static boolean validarUsuarioSistema(String usuario, String contrasena) {
-        ArrayList<String> usuarios = ManejoArchivos.LeeFichero("usuarios.txt");
-
-        for (String lineaUsuarios : usuarios) {
-
-            String[] partes = lineaUsuarios.split(",");
-
-            if (partes[3].equals(usuario) && partes[4].equals(contrasena)) {
-
-                return true;
-            }
-        }
-        return false;
-
-    }
-
-    /**
-     * Este metodo crea un ArrayList de vehiculos a partir de un archivo de
-     * texto
-     *
-     * @return Retorna el ArrayList de vehiculos creado
-     */
-    public static ArrayList<Vehiculo> crearVehiculos() {
-
-        ArrayList<String> datosVehiculos = ManejoArchivos.LeeFichero("vehiculos.txt");
-
-        datosVehiculos.remove(0);
-
-        ArrayList<Vehiculo> vehiculos = new ArrayList<>();
-
-        for (String lineaVehiculos : datosVehiculos) {
-
-            String[] datos = lineaVehiculos.split(",");
-
-            Vehiculo vehiculo = new Vehiculo(datos[0], datos[1], datos[2], datos[3], datos[4]);
-
-            vehiculos.add(vehiculo);
-
-        }
-
-        return vehiculos;
-    }
-
-    /**
-     * Este metodo crea un ArrayList de tipo Usuario a partir de un archivo de
-     * texto con el formato de usuarios en especifico.
-     *
-     * @return Retorna el ArrayList de Usuarios creados
-     */
-    //METODO PARA CREAR USUARIOS DEL SISTEMA
-    public static ArrayList<Usuario> crearUsuariosDelSistema() {
-
-        ArrayList<String> usuarios = ManejoArchivos.LeeFichero("usuarios.txt");
-
-        usuarios.remove(0);
-
-        ArrayList<Usuario> usuariosSistema = new ArrayList<>();
-
-        for (String lineaUsuarios : usuarios) {
-
-            String[] partes = lineaUsuarios.split(",");
-
-            if (partes[6].equals("C")) {
-
-                Cliente usuario = new Cliente(partes[0], partes[1], partes[2], partes[3], partes[4], partes[5]);
-
-                usuariosSistema.add(usuario);
-
-            } // Redudancia en PDF : EDAD CONDUCTOR? CEDULA CODUCTOR? LICENCIA?
-
-            if (partes[6].equals("R")) {
-
-                ArrayList<String> lineasConductores = ManejoArchivos.LeeFichero("conductores.txt");
-                int codigoVehiculo = 0;
-
-                Conductor usuario = new Conductor(partes[0], partes[1], partes[2], partes[3], partes[4], partes[5]);
-
-                for (String linea : lineasConductores) {
-                    String[] datosConductores = linea.split(",");
-                    if (partes[0].equals(datosConductores[0])) {
-                        usuario.setEstado(datosConductores[1]);
-                        codigoVehiculo = Integer.parseInt(datosConductores[2]);
-                    }
-                }
-
-                ArrayList<Vehiculo> vehiculos = crearVehiculos();
-
-                for (Vehiculo vehiculo : vehiculos) {
-                    if (vehiculo.getCodigoVehiculo() == codigoVehiculo) {
-                        usuario.setVehiculo(vehiculo);
-                        break;
-                    }
-                }
-
-                usuariosSistema.add(usuario);
-            }
-
-        }
-
-        return usuariosSistema;
-    }
-
+    }    
+    
     /**
      * Este metodo solicita la edad al usuario de la consola, siempre y cuando
      * sea un entero y se encuentre en un rango valido.
@@ -466,13 +455,16 @@ public class Sistema {
                     Servicio viajeTaxi = cliente.solicitarViajeTaxi();
                     if (viajeTaxi != null) {
                         guardarServicio(viajeTaxi, cliente);
+                        crearServicios();
                     }
+                    
                 }
                 case 2 -> {
                     // METODO DE SOLICITAR SERVICIO ENCOMIENDA
                     Servicio encomienda = cliente.solicitarEntregaEncomiendas();
                     if (encomienda != null) {
                         guardarServicio(encomienda, cliente);
+                        crearServicios();
                     }
                 }
                 case 3 ->
@@ -513,8 +505,10 @@ public class Sistema {
             switch (opcion) {
                 case 1 ->
                     conductor.consultarServicios();
-                case 2 ->
+                case 2 -> {
+                    System.out.println("\nDATOS DE SU VEHICULO");
                     System.out.println(conductor.getVehiculo() + "\n");
+                }
                 case 3 -> {
                     System.out.println("Gracias por usar nuestrar aplicacion! G8");
                     System.exit(0);
@@ -548,7 +542,7 @@ public class Sistema {
         String linea = servicio.getNumeroServicio() + ","
                 + tipoServicio + ","
                 + cliente.getNumCedula() + ","
-                + servicio.getConductor().getNombre() + " " + servicio.conductor.getApellido() + ","
+                + servicio.getConductor().getNombre() + " " + servicio.getConductor().getApellido() + ","
                 + servicio.getRuta().getOrigen() + ","
                 + servicio.getRuta().getDestino() + ","
                 + formatoFecha.format(servicio.getFecha()) + ","

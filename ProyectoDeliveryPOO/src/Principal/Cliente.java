@@ -1,7 +1,11 @@
 package Principal;
 
-import Principal.enums.TipoEncomienda;
-import Principal.enums.TipoFormaPago;
+import PaqueteServicio.Pago;
+import PaqueteServicio.Servicio;
+import PaqueteServicio.ViajeTaxi;
+import PaqueteServicio.Encomienda;
+import PaqueteEnums.TipoEncomienda;
+import PaqueteEnums.TipoFormaPago;
 import java.util.Scanner;
 
 /*

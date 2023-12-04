@@ -2,9 +2,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Principal;
+package PaqueteServicio;
 
-import Principal.enums.TipoEncomienda;
+import PaqueteEnums.TipoEncomienda;
+import Principal.Conductor;
 import java.util.Date;
 
 /**
@@ -58,7 +59,6 @@ public class Encomienda extends Servicio {
     public String toString(){
         return """
                /************************************************************/
-               Encomienda
                Tipo Encomienda:"""+" "+tipoEncomienda
                 + "\nCantidad: " + cantProductos
                 + super.toString();
