@@ -16,6 +16,7 @@ import java.util.Random;
  * @author Pc
  */
 public class Pago {
+
     private int idPago;
     private Date fechaPago; //CAMBIAR A DATE
     private int numeroServicio;
@@ -23,27 +24,25 @@ public class Pago {
     private double valorAPagar;
     private TipoFormaPago tipoFormaPago;
     private Cliente cliente;
-    
+
     //CONSTRUCTORES
+    public Pago(Servicio servicio, Cliente cliente) {
 
-    public Pago(Servicio servicio, Cliente cliente){
-        
         idPago = generarNumeroPagoUnico();
-        
-        fechaPago = servicio.getFecha();
-        
-        numeroServicio = servicio.getNumeroServicio();
-        
-        valorAPagar = servicio.getValorPagar();
-        
-        tipoFormaPago = servicio.getTipoFormaPago();
-        
-        this.cliente = cliente;
-        
-    }
-    
-    //GETTERS Y SETTERS
 
+        fechaPago = servicio.getFecha();
+
+        numeroServicio = servicio.getNumeroServicio();
+
+        valorAPagar = servicio.getValorPagar();
+
+        tipoFormaPago = servicio.getTipoFormaPago();
+
+        this.cliente = cliente;
+
+    }
+
+    //GETTERS Y SETTERS
     public int getIdPago() {
         return idPago;
     }
@@ -99,27 +98,33 @@ public class Pago {
     public void setCliente(Cliente cliente) {
         this.cliente = cliente;
     }
-    
-    
-    //METODOS
-    
-    public static int generarNumeroPagoUnico(){
-        
+
+    /**
+     *
+     * Este metodo lee el archivo "pagos.txt" para obtener los números de pago
+     * ya existentes, luego genera aleatoriamente un número de pago y verifica
+     * que sea unico
+     *
+     * @return Un numero de pago unico y no utilizado previamente
+     *
+     */
+    public static int generarNumeroPagoUnico() {
+
         ArrayList<String> datosServicios = ManejoArchivos.LeeFichero("pagos.txt");
 
         ArrayList<Integer> numeros = new ArrayList<>();
 
         datosServicios.remove(0);
-        
-        if (!numeros.isEmpty()){
-            
+
+        if (!numeros.isEmpty()) {
+
             for (String lineaServicios : datosServicios) {
 
                 String[] datos = lineaServicios.split(",");
 
                 numeros.add(Integer.valueOf(datos[0]));
             }
-            
+
         }
         boolean validez = true;
 
@@ -135,16 +140,27 @@ public class Pago {
 
         return 0;
     }
-    
-    //METODO CREAR PAGO
-    public static Pago guardarPago(Servicio servicio, Cliente cliente, double subtotal){
-        
+
+    /**
+     * Este metodo recibe un objeto Servicio, un objeto Cliente y el subtotal
+     * del pago. Utiliza esta información para crear un objeto Pago, establece
+     * el subtotal y guarda la información del pago en el archivo "pagos.txt".
+     * Luego, retorna el objeto Pago creado.
+     *
+     * @param servicio El servicio asociado al pago.
+     * @param cliente El cliente que realiza el pago.
+     * @param subtotal El subtotal del pago.
+     * @return El objeto Pago creado y guardado en el archivo "pagos.txt".
+     *
+     */
+    public static Pago guardarPago(Servicio servicio, Cliente cliente, double subtotal) {
+
         Pago pago = new Pago(servicio, cliente);
-        
+
         pago.setSubtotal(subtotal);
-        
+
         SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/aaaa");
-        
+
         String linea = pago.getIdPago() + ","
                 + formatoFecha.format(pago.getFechaPago()) + ","
                 + pago.getNumeroServicio() + ","
@@ -152,10 +168,10 @@ public class Pago {
                 + pago.getCliente().getNumCedula() + ","
                 + pago.getSubtotal() + ","
                 + pago.getValorAPagar();
-        
+
         ManejoArchivos.EscribirArchivo("pagos.txt", linea);
-        
+
         return pago;
     }
-    
+
 }

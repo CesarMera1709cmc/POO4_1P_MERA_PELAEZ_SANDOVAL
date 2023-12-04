@@ -31,7 +31,6 @@ public class Cliente extends Usuario {
         this.numTarjetaCredito = numTarjetaCredito;
     }
 
-    //METODO SOLICITAR SERVICIO TAXI
     /**
      * Este metodo es utilizado por el cliente para Solicitar un servicio de
      * tipo ViajeTaxi
@@ -156,7 +155,14 @@ public class Cliente extends Usuario {
         return null;
     }
 
-    //METODO ENTREGA DE ENCOMIENDA
+    /**
+     * Este metodo es utilizado por el Usuario para solicitar la entrega de una
+     * encomienda, recopilando y validando la información necesaria.
+     *
+     * @return Un objeto Encomienda si la entrega se confirma, o null si la
+     * solicitud es cancelada.
+     *
+     */
     public Encomienda solicitarEntregaEncomiendas() {
 
         Encomienda servicioEncomienda = new Encomienda();
@@ -368,4 +374,3 @@ public class Cliente extends Usuario {
         }
     }
 }
-

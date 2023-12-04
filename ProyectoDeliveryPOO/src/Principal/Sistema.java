@@ -13,7 +13,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Scanner;
-import java.util.regex.Pattern;
 
 /**
  *
@@ -37,7 +36,21 @@ public class Sistema {
 
     }
 
-    //SELECIONAR CONDUCTOR DISPONIBLE
+    /**
+     * Este metodo busca entre los usuarios registrados para encontrar un
+     * conductor que cumpla con los criterios de disponibilidad requeridos para
+     * el servicio proporcionado. Los criterios varían según el tipo de servicio
+     * (ViajeTaxi o Encomienda). Para ser considerado disponible, el conductor
+     * debe tener el estado "Disponible" (TipoEstado.D) y, en el caso de un
+     * ViajeTaxi, su vehículo debe ser de tipo "Automóvil" (TipoVehiculo.A). En
+     * el caso de una Encomienda, el vehículo debe ser de tipo Moto
+     * (TipoVehiculo.M).
+     *
+     * @param servicio El servicio para el cual se busca un conductor
+     * disponible.
+     * @return El conductor disponible que cumple con los requisitos, o null si
+     * no se encuentra ninguno.
+     */
     public static Conductor seleccionarConductorDisponible(Servicio servicio) {
 
         for (Usuario usuario : usuarios) {
@@ -58,7 +71,21 @@ public class Sistema {
         return null;
     }
 
-    //CREACION DE SERVICIOS
+    /**
+     *
+     * Este método lee el contenido del archivo "servicios.txt", procesa la
+     * información de cada línea para crear instancias de servicios (ya sea
+     * ViajeTaxi o Encomienda) y las agrega a la lista de servicios. Se utiliza
+     * información de los archivos ("viajes.txt" y "encomiendas.txt") para
+     * completar la información asociada a cada servicio.
+     *
+     * Nota: La estructura esperada de cada línea en el archivo "servicios.txt"
+     * debe ser la siguiente: ID_SERVICIO, TIPO_SERVICIO, NOMBRE_CONDUCTOR,
+     * ID_USUARIO_CLIENTE, ORIGEN, DESTINO, FECHA_SERVICIO, HORA_SERVICIO.
+     *
+     *
+     *
+     */
     public static void crearServicios() {
 
         ArrayList<String> lineasServicios = ManejoArchivos.LeeFichero("servicios.txt");
@@ -345,7 +372,7 @@ public class Sistema {
                     System.out.println("Ingresar el numero de su tarjeta de Credito/Debito ** FORMATO 1234 1234 1234 1234");
                     numeroTarjeta = scanner.nextLine();
                     if (!validarFormatoTarjetaCredito(numeroTarjeta)) {
-                        System.out.println("Formato de tarjeta no valido. Debe tener 16 dígitos.");
+                        System.out.println("Formato de tarjeta no valido. Debe tener 16 digitos");
                     }
                 } while (!validarFormatoTarjetaCredito(numeroTarjeta));
 
@@ -371,6 +398,14 @@ public class Sistema {
         return null;
     }
 
+    /**
+     *
+     * Este método verifica si el número de tarjeta de crédito cumple con el
+     * formato requerido 1234 1234 1234 1234
+     *
+     * @param numeroTarjeta El número de tarjeta de crédito a validar.
+     * @return true si el formato de la tarjeta es válido, false si no lo es.
+     */
     public static boolean validarFormatoTarjetaCredito(String numeroTarjeta) {
 
         String tarjetaSinEspacios = numeroTarjeta.replaceAll("\\s", "");
@@ -522,6 +557,19 @@ public class Sistema {
         ManejoArchivos.EscribirArchivo("servicios.txt", linea);
     }
 
+    /**
+     * * Guarda la información de un servicio de taxi y su pago asociado en el
+     * archivo respectivo
+     *
+     * Este metodo toma un objeto ViajeTaxi y un objeto Pago como parametros, y
+     * crea una línea de texto que representa la información del servicio y el
+     * pago.
+     *
+     * @param viaje El objeto ViajeTaxi que contiene la información del servicio
+     * de taxi
+     * @param pago El objeto Pago que contiene la información del pago asociado
+     * al servicio
+     */
     public static void guardarServicioTaxi(ViajeTaxi viaje, Pago pago) {
 
         String linea = viaje.getNumeroServicio() + ","
@@ -533,6 +581,19 @@ public class Sistema {
         ManejoArchivos.EscribirArchivo("viajes.txt", linea);
     }
 
+    /**
+     *
+     * Este metodo toma un objeto Encomienda y un objeto Pago como parametros, y
+     * crea una línea de texto que representa la información del servicio y el
+     * pago.
+     *
+     * @param encomienda El objeto Encomienda que contiene la información del
+     * servicio de encomienda.
+     * @param pago El objeto Pago que contiene la información del pago asociado
+     * al servicio.
+     *
+     *
+     */
     public static void guardarServicioEncomienda(Encomienda encomienda, Pago pago) {
 
         String linea = encomienda.getNumeroServicio() + ","

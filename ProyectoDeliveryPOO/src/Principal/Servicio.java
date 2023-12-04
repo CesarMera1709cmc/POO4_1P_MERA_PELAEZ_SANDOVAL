@@ -231,7 +231,7 @@ public abstract class Servicio {
      * @return Retorna un entero, el cual es el Identificador Unico.
     */
     
-    //METODO PARA GENERAR NUMERO SERVICIO UNICO
+
     public static int generarNumeroServicioUnico() {
 
         ArrayList<String> datosServicios = ManejoArchivos.LeeFichero("servicios.txt");
